@@ -2,7 +2,8 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "analytics": "fb92b2c0-46ca-440a-9114-3f0f397a2c74"
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -18,15 +19,15 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
-            ],
+           "assets": [
+ "src/favicon.ico",
+ "src/assets"
+] 
+            ,
             "styles": [
-              "src/styles.css"
-            ],
+ "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+ "src/styles.css"
+],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {
