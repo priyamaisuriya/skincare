@@ -22,6 +22,7 @@ export class List implements OnInit {
     this.stateService.getAllStates().subscribe({
       next: (data) => {
         this.state = data;
+        console.log('data.', data)
       },
       error: (err) => {
         console.error('Error loading states:', err);

@@ -16,7 +16,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped v_center" id="table-1">
+                            <table class="table table-striped v_center">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -24,13 +24,30 @@
                                         <th>category_id</th>
                                         <th>amount</th>
                                         <th>is_new</th>
-                                        <th>Actions</th>
-
-
+                                        <th>Edit</th>
+                                        <th>Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    @for(product of products; track product.id){
+                                    <tr>
+                                        <td>{{product.id}}</td>
+                                        <td>{{product.name}}</td>
+                                        <td>{{product.category_id}}</td>
+                                        <td>{{product.amount}}</td>
+                                        <td>{{product.is_new}}</td>
+                                        <td>
+                                            <a href="/admin/products/edit/{{product.id}}" class="btn btn-primary">
+                                                Edit
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <button (click)="deleteproducts(product.id)" class="btn btn-danger">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
