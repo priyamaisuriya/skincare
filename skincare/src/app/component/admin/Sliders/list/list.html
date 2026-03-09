@@ -16,7 +16,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped v_center" id="table-1">
+                            <table class="table table-striped v_center">
                                 <thead>
                                     <tr>
                                         <th>Id</th>
@@ -24,13 +24,30 @@
                                         <th>Image url</th>
                                         <th>Sort Order</th>
                                         <th>Status</th>
-                                        <th>Action</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
 
 
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    @for(slider of sliders; track slider.id){
+                                    <tr>
+                                        <td>{{slider.id}}</td>
+                                        <td>{{slider.name}}</td>
+                                        <td>{{slider.image_url}}</td>
+                                        <td>{{slider.sort_order}}</td>
+                                        <td>{{slider.status}}</td>
+                                        <td>
+                                            <a href="/admin/slider/edit/{{slider.id}}" class="btn btn-primary">Edit</a>
+                                        </td>
+                                        <td>
+                                            <button (click)="deleteSlider(slider.id)" class="btn btn-danger">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>

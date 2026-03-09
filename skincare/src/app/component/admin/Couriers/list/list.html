@@ -16,20 +16,37 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped v_center" id="table-1">
+                            <table class="table table-striped v_center">
                                 <thead>
                                     <tr>
                                         <th>Id</th>
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>Action</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
 
 
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    @for(courier of couriers; track courier.id){
+                                    <tr>
+                                        <td>{{courier.id}}</td>
+                                        <td>{{courier.name}}</td>
+                                        <td>{{courier.email}}</td>
+                                        <td>{{courier.phone}}</td>
+                                        <td>
+                                            <a href="/admin/courier/edit/{{courier.id}}"
+                                                class="btn btn-primary">Edit</a>
+                                        </td>
+                                        <td>
+                                            <button (click)="deleteCouriers(courier.id)" class="btn btn-danger">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
