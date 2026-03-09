@@ -11,5 +11,6 @@ export const routes: Routes = [
             { path : 'sidebar', component: Sidebar},
             { path : 'header', component: Header}
         ]
-    }
+    },
+    {path : '/shop',component: ShopComponent}
 ];
