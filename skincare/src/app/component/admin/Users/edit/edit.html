@@ -1,0 +1,246 @@
+<section class="section">
+    <div class="section-header">
+        <div class="section-header-back">
+            <a href="" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+        </div>
+
+        <h1>Manage users</h1>
+        <div class="section-header-breadcrumb">
+            <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+            <div class="breadcrumb-item">Manage users</div>
+        </div>
+    </div>
+
+    <div class="section-body">
+        <h2 class="section-title">Manage users</h2>
+        <p class="section-lead"> On this page you can create a new users and fill in all
+            fields.</p>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Manage Your users</h4>
+
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-4">
+                        <label class="col-form-label">
+                            Image url</label>
+
+                        <div id="image-preview" class="image-preview" style="width: 150px; height: 150px;">
+                            <label for="image-upload" id="image-label">Choose File</label>
+                            <input type="file" name="image_url" id="image-upload" />
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">User Name</label>
+                                <input type="text" name="name" id="name" class="form-control" value=""
+                                    placeholder="please enter user name" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your user name
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label ">Password</label>
+                                <input type="text" name="password" id="password" class="form-control" value=""
+                                    placeholder="please enter password" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your password
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">Email</label>
+                                <input type="text" name="email" id="email" class="form-control" value=""
+                                    placeholder="please enter productse email" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your products email
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label">Phone Number</label>
+
+                                <input type="text" name="phone_number" id="phone_number" class="form-control" value=""
+                                    placeholder="please enter products phonenumber" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your phonenumber
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- first_name Field -->
+
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">First Name</label>
+
+                                <input type="text" name="first_name" id="first_name" class="form-control" value=""
+                                    placeholder="please enter first_name" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your first_name
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- lastname Field -->
+
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label ">Last Name</label>
+                                <input type="text" name="last_name" id="last_name" class="form-control" value=""
+                                    placeholder="please enter last_name" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your last_name
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">Address</label>
+
+                                <textarea name="address" id="address" class="form-control input-like-textarea"
+                                    placeholder="Enter your full address" rows="3" required></textarea>
+
+                                <div class="invalid-feedback">
+                                    Please enter your address
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--  city -->
+
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label">City</label>
+
+                                <input type="text" name="city" id="city" class="form-control"
+                                    placeholder="Please enter city" required>
+
+                                <div class="invalid-feedback">
+                                    Please fill in your city
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+
+                        <!-- State Field -->
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">State</label>
+
+                                <input type="text" name="state" id="state" class="form-control"
+                                    placeholder="Please enter state" required>
+
+                                <div class="invalid-feedback">
+                                    Please enter your state
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Postal Code Field -->
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label">Postal Code</label>
+
+                                <input type="text" name="postal_code" id="postal_code" class="form-control"
+                                    placeholder="Please enter postal code" required>
+
+                                <div class="invalid-feedback">
+                                    Please enter your postal code
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <!-- Date of Birth Field -->
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">Date of Birth</label>
+
+                                <input type="date" name="dob" id="dob" class="form-control" required>
+
+                                <div class="invalid-feedback">
+                                    Please enter your date of birth
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4 align-items-center">
+                                <label class="col-form-label">Status</label>
+                                <div class="col-sm-12 col-md-7">
+                                    <label class="custom-switch d-flex align-items-center mb-0">
+                                        <input type="checkbox" name="status" value="1" class="custom-switch-input">
+                                        <span class="custom-switch-indicator me-2"></span>
+                                        <span class="custom-switch-description mb-0"></span>
+                                    </label>
+                                    <div class="invalid-feedback">
+                                        Please fill in your status
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">Type</label>
+
+                                <select name="type" id="type" class="form-control" required>
+                                    <option value="">Select type</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="customer">Customer</option>
+
+                                </select>
+
+                                <div class="invalid-feedback">
+                                    Please select user type
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="form-group mb-4">
+            <div class="text-right m-4">
+                <button class="btn btn-primary" type="submit">Submit</button>
+                <button type="button" class="btn btn-primary ml-2">Reset</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</section>

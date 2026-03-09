@@ -1,0 +1,42 @@
+<section class="section">
+
+    <div class="section-header">
+        <h1>Add FAQ</h1>
+    </div>
+
+    <div class="section-body">
+
+        <div class="card">
+            <div class="card-body">
+
+                <form action="/admin/faq/create" method="POST">
+
+
+
+                    <div class="form-group">
+                        <label>Question</label>
+                        <input type="text" name="question" class="form-control" placeholder="Enter Question" required>
+                    </div>
+
+                    <!-- {{-- Answer --}} -->
+                    <div class="form-group">
+                        <label>Answer</label>
+                        <textarea name="answer" class="form-control" rows="5" placeholder="Enter Answer"
+                            required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mr-2">
+                        Save FAQ
+                    </button>
+
+                    <a href="/admin/faq" class="btn btn-secondary">
+                        Cancel
+                    </a>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</section>
