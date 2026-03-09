@@ -14,7 +14,7 @@
                     <div class="card-body">
 
                         <div class="table-responsive">
-                            <table class="table table-striped v_center" id="table-1">
+                            <table class="table table-striped v_center">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -28,9 +28,19 @@
                                 </thead>
 
                                 <tbody>
-
-
-
+                                    @for(order of orders; track order.id) {
+                                    <tr>
+                                        <td>{{ order.id }}</td>
+                                        <td>{{ order.customer_id }}</td>
+                                        <td>{{ order.total_amount }}</td>
+                                        <td>{{ order.status }}</td>
+                                        <td>{{ order.order_date }}</td>
+                                        <td><button class="btn btn-primary" (click)="showOrder(order.id)">Show</button>
+                                        </td>
+                                        <td><button class="btn btn-warning" (click)="editOrder(order.id)">Edit</button>
+                                        </td>
+                                    </tr>
+                                    }
                                 </tbody>
 
                             </table>
