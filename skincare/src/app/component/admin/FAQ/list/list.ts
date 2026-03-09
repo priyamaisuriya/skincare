@@ -11,7 +11,6 @@ import { Faq } from '../../../../models/faq';
 })
 export class List implements OnInit {
   faqs: Faq[] = [];
-
   constructor(private faqService: FaqService) { }
 
   ngOnInit(): void {
@@ -22,6 +21,8 @@ export class List implements OnInit {
     this.faqService.getAllFaqs().subscribe({
       next: (data) => {
         this.faqs = data;
+        console.log('data.', data)
+
       },
       error: (err) => {
         console.error('Error loading FAQs:', err);
