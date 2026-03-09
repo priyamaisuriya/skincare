@@ -17,11 +17,6 @@
     </div>
 
     <div class="section-body">
-
-
-
-
-
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -40,6 +35,22 @@
                                 </thead>
 
                                 <tbody>
+                                    @for(faq of faqs; track faq.id){
+                                    <tr>
+                                        <td>{{faq.id}}</td>
+                                        <td>{{faq.question}}</td>
+                                        <td>
+                                            <a href="/admin/faq/edit/{{faq.id}}" class="btn btn-primary">
+                                                Edit
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <button (click)="deleteFaq(faq.id)" class="btn btn-danger">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    }
                                 </tbody>
 
                             </table>
