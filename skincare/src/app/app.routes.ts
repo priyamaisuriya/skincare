@@ -53,7 +53,7 @@ export const routes: Routes = [
             { path: 'admin/categories/create', component: CategoriesEdit },
             { path: 'admin/categories/edit/:id', component: CategoriesEdit },
 
-            { path: 'admin/order', component: OrderList },
+            { path: 'admin/orders', component: OrderList },
             { path: 'admin/order/create', component: OrderEdit },
             { path: 'admin/order/edit/:id', component: OrderEdit },
 
@@ -75,5 +75,5 @@ export const routes: Routes = [
 
         ]
     },
-    {path : '/shop',component: ShopComponent}
+
 ];

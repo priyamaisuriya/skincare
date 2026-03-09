@@ -1,14 +1,43 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Header as AppHeader } from '../../layout/header/header';
-import { Sidebar as AppSidebar } from '../../layout/sidebar/sidebar';
-
+import { StateService } from '../../../../service/state';
+import { State } from '../../../../models/state'
 @Component({
   selector: 'app-list',
-  imports: [AppHeader, AppSidebar, RouterLink, FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './list.html',
   styleUrl: './list.css',
 })
-export class List { }
+export class List implements OnInit {
+  state: State[] = [];
+
+  constructor(private stateService: StateService) { }
+
+  ngOnInit(): void {
+    this.loadStates();
+  }
+  loadStates(): void {
+    this.stateService.getAllStates().subscribe({
+      next: (data) => {
+        this.state = data;
+      },
+      error: (err) => {
+        console.error('Error loading states:', err);
+      }
+    });
+  }
+  deleteState(id: number): void {
+    if (confirm('Are you sure you want to delete this state?')) {
+      this.stateService.deleteState(id).subscribe({
+        next: () => {
+          this.loadStates();
+        },
+        error: (err) => {
+          console.error('Error deleting state:', err);
+        }
+      });
+    }
+  }
+}
