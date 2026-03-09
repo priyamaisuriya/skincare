@@ -11,4 +11,6 @@ import { Sidebar as AppSidebar } from '../../layout/sidebar/sidebar';
   templateUrl: './edit.html',
   styleUrl: './edit.css',
 })
-export class Edit { }
+export class Edit {
+
+}
