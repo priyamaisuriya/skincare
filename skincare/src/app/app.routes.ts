@@ -15,6 +15,8 @@ import { List as FaqList } from './component/admin/FAQ/list/list';
 import { Edit as FaqEdit } from './component/admin/FAQ/edit/edit';
 import { List as ContactList } from './component/admin/Contact/list/list';
 import { Edit as ContactEdit } from './component/admin/Contact/edit/edit';
+import { List as ProductList } from './component/admin/Product/list/list';
+import { Edit as ProductEdit } from './component/admin/Product/edit/edit';
 
 export const routes: Routes = [
     {
@@ -49,6 +51,10 @@ export const routes: Routes = [
             { path: 'admin/contacts', component: ContactList },
             { path: 'admin/contacts/create', component: ContactEdit },
             { path: 'admin/contacts/edit/:id', component: ContactEdit },
+
+            { path: 'admin/products', component: ProductList },
+            { path: 'admin/products/create', component: ProductEdit },
+            { path: 'admin/products/edit/:id', component: ProductEdit },
 
         ]
     }

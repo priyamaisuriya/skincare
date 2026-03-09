@@ -1,0 +1,327 @@
+<section class="section">
+    <div class="section-header d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <a routerLink="/admin/products/create" class="btn btn-icon mr-3">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1 class="mb-0">Manage Products</h1>
+        </div>
+    </div>
+
+    <div class="section-body">
+
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h4>Manage Your Products</h4>
+            </div>
+            <div class="card-body">
+                <form enctype="multipart/form-data" class="needs-validation" novalidate>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">Name</label>
+                                <input type="text" name="name" class="form-control"
+                                    placeholder="please enter categories name" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your products name
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label">Slug</label>
+                                <input type="text" name="slug" class="form-control"
+                                    placeholder="please enter products slug" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your products slug
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">How to use</label>
+                                <textarea name="how_to_use" class="form-control"
+                                    placeholder="please enter products how to use description" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please fill in your products how to use
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label">Shipping & Return</label>
+                                <textarea name="shipping_return" class="form-control"
+                                    placeholder="please enter products shipping and return description"
+                                    required></textarea>
+                                <div class="invalid-feedback">
+                                    Please fill in your products shipping and return
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">Short description</label>
+                                <textarea name="short_description" class="form-control"
+                                    placeholder="please enter products short description" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please fill in your products short description
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label">Long description</label>
+                                <textarea name="long_description" class="form-control"
+                                    placeholder="please enter products long description" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please fill in your products long description
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">mrp</label>
+                                <input type="number" name="mrp" class="form-control"
+                                    placeholder="please enter products mrp" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your products mrp
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label ">discount</label>
+                                <input type="number" name="discount" class="form-control"
+                                    placeholder="please enter products discount" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your products discount
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">Amount</label>
+                                <input type="number" name="amount" class="form-control input-like-textarea"
+                                    placeholder="Please enter products amount" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your products amount
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label">Volume Weight</label>
+                                <input type="text" name="volume_weight" class="form-control"
+                                    placeholder="Please enter products volume weight" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your products volume weight
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4 align-items-center">
+                                <div class="col-sm-12 col-md-7 align-items-center">
+                                    <label class="col-form-label align-top p-0">Is New</label>
+                                    <label class="custom-switch align-items-center mb-0">
+                                        <input type="checkbox" name="is_new" class="custom-switch-input">
+                                        <span class="custom-switch-indicator me-2"></span>
+                                        <span class="custom-switch-description mb-0"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4 align-items-center">
+                                <label class="col-form-label">Home Page</label>
+                                <div class="col-sm-12 col-md-7">
+                                    <label class="custom-switch d-flex align-items-center mb-0">
+                                        <input type="checkbox" name="home_page" class="custom-switch-input">
+                                        <span class="custom-switch-indicator me-2"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4 align-items-center">
+                                <div class="col-sm-12 col-md-7 align-items-center">
+                                    <label class="col-form-label align-top p-0">Status</label>
+                                    <label class="custom-switch align-items-center mb-0">
+                                        <input type="checkbox" name="status" class="custom-switch-input">
+                                        <span class="custom-switch-indicator me-2"></span>
+                                        <span class="custom-switch-description mb-0"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4 align-items-center">
+                                <label class="col-form-label">Best seller</label>
+                                <div class="col-sm-12 col-md-7">
+                                    <label class="custom-switch d-flex align-items-center mb-0">
+                                        <input type="checkbox" name="best_seller" class="custom-switch-input">
+                                        <span class="custom-switch-indicator me-2"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">Meta Description</label>
+                                <textarea name="meta_description" class="form-control input-like-textarea"
+                                    placeholder="Please enter meta description" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please fill in your meta description
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label">Meta Keyword</label>
+                                <textarea name="meta_keywords" class="form-control" rows="3"
+                                    placeholder="Please enter meta keyword" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please fill in your meta keyword
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">Page Title</label>
+                                <input type="text" name="page_title" class="form-control input-like-textarea"
+                                    placeholder="Please enter page title" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your page title
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row mb-4">
+                                <label class="col-form-label">Meta Title</label>
+                                <input type="text" name="meta_title" class="form-control"
+                                    placeholder="Please enter products meta title" required>
+                                <div class="invalid-feedback">
+                                    Please fill in your products meta title
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">Category id</label>
+                                <select name="category_id" class="form-control" required>
+                                    <option value="">Select Category only active id show</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a category
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="h5 mb-4">Images</h3>
+                            <div class="border-2 border-dashed rounded-3 p-4 text-center border-secondary bg-light">
+                                <p class="text-muted mb-2">Drag and drop images here, or click to selecting</p>
+                                <input type="file" multiple class="form-control" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="card shadow-sm">
+                        <div class="card-body p-4">
+                            <h3 class="h5 mb-4">Add Related Products</h3>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label class="col-form-label">Select Product</label>
+                                        <select name="selectedProductId" class="form-control">
+                                            <option value="">Choose a product...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="col-form-label">&nbsp;</label>
+                                        <button type="button" class="btn btn-primary form-control">
+                                            <i class="fas fa-plus"></i> Add Product
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h5>Selected Products</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="selected_products_table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Product Image</th>
+                                            <th scope="col">Product Name</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <div class="text-right m-4">
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                            <button type="button" class="btn btn-primary ml-2">Reset</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
