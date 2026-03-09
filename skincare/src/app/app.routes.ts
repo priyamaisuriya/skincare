@@ -75,9 +75,5 @@ export const routes: Routes = [
 
         ]
     },
-<<<<<<< HEAD
     // {path : '/shop',component: ShopComponent}
-=======
-
->>>>>>> a4584c5afd1d84f6de0d4a4f2dc49e0e52647ef4
 ];

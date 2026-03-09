@@ -31,7 +31,8 @@ export class List implements OnInit {
     });
   }
 
-  deleteContact(id: number): void {
+  deleteContact(id: number | undefined): void {
+    if (!id) return;
     if (confirm('Are you sure you want to delete this contact?')) {
       this.contactService.deleteContact(id).subscribe({
         next: () => {
