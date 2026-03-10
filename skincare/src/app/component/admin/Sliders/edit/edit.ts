@@ -10,7 +10,6 @@ import { SliderService } from '../../../../service/slider';
 @Component({
   selector: 'app-edit',
   imports: [RouterLink, ReactiveFormsModule, CommonModule],
-
   templateUrl: './edit.html',
   styleUrl: './edit.css',
 })

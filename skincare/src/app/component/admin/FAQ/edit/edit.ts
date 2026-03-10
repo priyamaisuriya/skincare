@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -8,7 +7,6 @@ import { FaqService } from '../../../../service/faq';
 @Component({
   selector: 'app-edit',
   imports: [RouterLink, ReactiveFormsModule, CommonModule],
-
   templateUrl: './edit.html',
   styleUrl: './edit.css',
 })
