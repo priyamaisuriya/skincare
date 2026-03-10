@@ -31,10 +31,10 @@
                                 <div id="image-preview" class="image-preview"
                                     [style.background-image]="imagePreview ? 'url(' + imagePreview + ')' : 'none'"
                                     [style.background-size]="'cover'" [style.background-position]="'center'"
-                                    style="width: 250px; height: 150px; border: 1px dashed #ced4da; display: flex; align-items: center; justify-content: center; position: relative;">
+                                    style="width: 150px; height: 180px; overflow: visible;">
                                     <label for="image-upload" id="image-label"
-                                        style="position: absolute; bottom: 5px; left: 5px; background: rgba(0,0,0,0.5); color: white; padding: 2px 8px; cursor: pointer;">{{
-                                        imagePreview ? 'Change File' : 'Choose File' }}</label>
+                                        style="width: calc(100% + 4px); left: -2px;">{{ imagePreview ?
+                                        'Change File' : 'Choose File' }}</label>
                                     <input type="file" name="image_url" id="image-upload"
                                         (change)="onFileSelected($event)" accept="image/*" style="display: none;" />
                                 </div>
@@ -109,8 +109,8 @@
 
                             <div class="form-group mb-4 mt-4">
                                 <div class="text-right">
-                                    <button class="btn btn-primary mr-2" type="submit" [disabled]="sliderForm.invalid">
-                                        {{ isEditMode ? 'Update Slider' : 'Save Slider' }}
+                                    <button class="btn btn-primary mr-2" type="submit">
+                                        {{ isEditMode ? 'Update ' : 'Save ' }}
                                     </button>
                                     <a routerLink="/admin/sliders" class="btn btn-secondary">Cancel</a>
                                 </div>

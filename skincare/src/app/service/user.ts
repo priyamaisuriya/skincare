@@ -7,7 +7,7 @@ import { User } from '../models/user';
 @Injectable({
   providedIn: 'root',
 })
-export class Userservice {
+export class UsersService {
   private apiUrl = 'http://127.0.0.1:8000/api/admin/users';
 
   constructor(private http: HttpClient) { }
@@ -20,12 +20,12 @@ export class Userservice {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
-  createUser(user: User): Observable<User> {
-    return this.http.post<User>(this.apiUrl, user);
+  createUser(user: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, user);
   }
 
-  updateUser(id: number, user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${id}`, user);
+  updateUser(id: number, user: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${id}?_method=PUT`, user);
   }
 
   deleteUser(id: number): Observable<void> {

@@ -1,3 +1,5 @@
+
+
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -77,6 +79,7 @@ export class Edit implements OnInit {
   }
 
   saveSlider(): void {
+    this.sliderForm.markAllAsTouched();
     if (this.sliderForm.invalid) return;
 
     const formData = new FormData();

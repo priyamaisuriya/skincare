@@ -3,7 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Userservice } from '../../../../service/user';
+import { UsersService } from '../../../../service/user';
 import { User } from '../../../../models/user';
 
 
@@ -16,7 +16,7 @@ import { User } from '../../../../models/user';
 })
 export class List implements OnInit {
   users: User[] = [];
-  constructor(private userService: Userservice) { }
+  constructor(private userService: UsersService) { }
 
   ngOnInit(): void {
     this.loadusers();
@@ -28,7 +28,7 @@ export class List implements OnInit {
         this.users = data;
         console.log(this.users);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading users:', err);
       }
     });
@@ -39,7 +39,7 @@ export class List implements OnInit {
         next: () => {
           this.loadusers();
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error deleting user:', err);
         }
       });

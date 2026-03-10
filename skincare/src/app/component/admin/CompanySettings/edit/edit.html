@@ -1,15 +1,16 @@
 <section class="section">
     <div class="section-header">
 
-        <h1>Company Setting</h1>
+        <h1>{{ isEditMode ? 'Edit Company Setting' : 'Add Company Setting' }}</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-            <div class="breadcrumb-item">Company Setting</div>
+            <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
+            <div class="breadcrumb-item"><a routerLink="/admin/company-settings">Company Setting</a></div>
+            <div class="breadcrumb-item">{{ isEditMode ? 'Edit Company Setting' : 'Add Company Setting' }}</div>
         </div>
     </div>
 
     <div class="section-body">
-        <h2 class="section-title">Company Setting</h2>
+        <h2 class="section-title">{{ isEditMode ? 'Edit Company Setting' : 'Add Company Setting' }}</h2>
         <p class="section-lead">On this page you can edit a new Company Setting and fill in all fields.</p>
 
         <div class="row">
@@ -17,12 +18,12 @@
                 <div class="card">
 
                     <div class="card-header">
-                        <h4>Manage Your Company Setting</h4>
+                        <h4>{{ isEditMode ? 'Edit Company Setting' : 'Add Company Setting' }}</h4>
                     </div>
 
                     <div class="card-body">
 
-                        <form enctype="multipart/form-data" class="needs-validation" novalidate>
+                        <form [formGroup]="companySettingsForm" (ngSubmit)="saveCompanySettings()">
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -32,12 +33,17 @@
                                             <label class="col-form-label">Favicon</label>
 
                                             <div id="favicon-preview" class="image-preview"
-                                                style="width: 150px; height: 150px;">
-                                                <label for="favicon-upload" id="favicon-label">Choose File</label>
-                                                <input type="file" name="favicon" id="favicon-upload" />
+                                                [style.background-image]="faviconPreview  ? 'url(' +  faviconPreview + ')' : 'none'"
+                                                [style.background-size]="'cover'" [style.background-position]="'center'"
+                                                style="width: 150px; height: 150px; overflow: visible;">
+                                                <label for="favicon-upload" id="favicon-label"
+                                                    style="width: calc(100% + 4px); left: -2px;">{{ faviconPreview ?
+                                                    'Change File' : 'Choose File' }}</label>
+                                                <input type="file" formControlName="favicon" id="favicon-upload"
+                                                    (change)="onFaviconSelected($event)" accept="image/*"
+                                                    style="display: none;" />
 
-                                                <img id="favicon-img" src="assets/img/default.png" alt="favicon preview"
-                                                    style="width:100%;height:100%;object-fit:cover;position:absolute;left:0;top:0;" />
+
                                             </div>
                                         </div>
                                     </div>
@@ -49,12 +55,16 @@
                                         <label class="col-form-label">Logo</label>
 
                                         <div id="logo-preview" class="image-preview"
-                                            style="width: 150px; height: 150px;">
-                                            <label for="logo-upload" id="logo-label">Choose File</label>
-                                            <input type="file" name="logo" id="logo-upload" />
+                                            [style.background-image]="logoPreview  ? 'url(' +  logoPreview + ')' : 'none'"
+                                            [style.background-size]="'cover'" [style.background-position]="'center'"
+                                            style="width: 150px; height: 150px; overflow: visible;">
+                                            <label for="logo-upload" id="logo-label"
+                                                style="width: calc(100% + 4px); left: -2px;">{{ logoPreview ? 'Change
+                                                File' : 'Choose File' }}</label>
+                                            <input type="file" formControlName="logo" id="logo-upload" accept="image/*"
+                                                style="display: none;" (change)="onLogoSelected($event)" />
 
-                                            <img id="logo-img" src="assets/img/default.png" alt="logo preview"
-                                                style="width:100%;height:100%;object-fit:cover;position:absolute;left:0;top:0;" />
+
                                         </div>
 
                                     </div>
@@ -67,10 +77,11 @@
                                     <div class="form-group mb-4">
                                         <label class="col-form-label">Name</label>
 
-                                        <input type="text" name="name" class="form-control"
+                                        <input type="text" formControlName="name" class="form-control"
                                             placeholder="please enter name" required>
 
-                                        <div class="invalid-feedback">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="companySettingsForm.get('name')?.invalid && companySettingsForm.get('name')?.touched">
                                             Please fill in your name
                                         </div>
 
@@ -81,10 +92,11 @@
                                     <div class="form-group mb-4">
                                         <label class="col-form-label">Description</label>
 
-                                        <textarea name="description" class="form-control"
+                                        <textarea formControlName="description" class="form-control"
                                             placeholder="please enter description" required></textarea>
 
-                                        <div class="invalid-feedback">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="companySettingsForm.get('description')?.invalid && companySettingsForm.get('description')?.touched">
                                             Please fill in your description
                                         </div>
 
@@ -98,10 +110,11 @@
                                     <div class="form-group mb-4">
                                         <label class="col-form-label">Email</label>
 
-                                        <input type="email" name="email" class="form-control"
+                                        <input type="email" formControlName="email" class="form-control"
                                             placeholder="please enter email" required>
 
-                                        <div class="invalid-feedback">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="companySettingsForm.get('email')?.invalid && companySettingsForm.get('email')?.touched">
                                             Please fill in your email
                                         </div>
 
@@ -113,10 +126,11 @@
                                     <div class="form-group mb-4">
                                         <label class="col-form-label">Address</label>
 
-                                        <input type="text" name="address" class="form-control"
+                                        <input type="text" formControlName="address" class="form-control"
                                             placeholder="please enter address" required>
 
-                                        <div class="invalid-feedback">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="companySettingsForm.get('address')?.invalid && companySettingsForm.get('address')?.touched">
                                             Please fill in your address
                                         </div>
 
@@ -130,10 +144,11 @@
                                     <div class="form-group mb-4">
                                         <label class="col-form-label">Phone Number</label>
 
-                                        <input type="text" name="phone_number" class="form-control"
+                                        <input type="text" formControlName="phone_number" class="form-control"
                                             placeholder="please enter phone" required>
 
-                                        <div class="invalid-feedback">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="companySettingsForm.get('phone_number')?.invalid && companySettingsForm.get('phone_number')?.touched">
                                             Please fill in your phone
                                         </div>
 
@@ -144,10 +159,11 @@
                                     <div class="form-group mb-4">
                                         <label class="col-form-label">Facebook url</label>
 
-                                        <input type="text" name="facebook_url" class="form-control"
+                                        <input type="text" formControlName="facebook_url" class="form-control"
                                             placeholder="please enter facebook_url" required>
 
-                                        <div class="invalid-feedback">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="companySettingsForm.get('facebook_url')?.invalid && companySettingsForm.get('facebook_url')?.touched">
                                             Please fill in your facebook_url
                                         </div>
 
@@ -161,10 +177,11 @@
                                     <div class="form-group mb-4">
                                         <label class="col-form-label">Instagram url</label>
 
-                                        <input type="text" name="instagram_url" class="form-control"
+                                        <input type="text" formControlName="instragram_url" class="form-control"
                                             placeholder="please enter instagram_url" required>
 
-                                        <div class="invalid-feedback">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="companySettingsForm.get('instragram_url')?.invalid && companySettingsForm.get('instragram_url')?.touched">
                                             Please fill in your instagram_url
                                         </div>
 
@@ -176,10 +193,11 @@
                                     <div class="form-group mb-4">
                                         <label class="col-form-label">Whatsapp url</label>
 
-                                        <input type="text" name="whatsapp_url" class="form-control"
+                                        <input type="text" formControlName="whatsapp_url" class="form-control"
                                             placeholder="please enter whatsapp_url" required>
 
-                                        <div class="invalid-feedback">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="companySettingsForm.get('whatsapp_url')?.invalid && companySettingsForm.get('whatsapp_url')?.touched">
                                             Please fill in your whatsapp_url
                                         </div>
 
@@ -194,10 +212,11 @@
                                     <div class="form-group mb-4">
                                         <label class="col-form-label">Site Name</label>
 
-                                        <input type="text" name="site_name" class="form-control"
+                                        <input type="text" formControlName="site_name" class="form-control"
                                             placeholder="please enter site_name" required>
 
-                                        <div class="invalid-feedback">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="companySettingsForm.get('site_name')?.invalid && companySettingsForm.get('site_name')?.touched">
                                             Please fill in your site_name
                                         </div>
 
@@ -209,10 +228,11 @@
                                     <div class="form-group mb-4">
                                         <label class="col-form-label">Meta Title</label>
 
-                                        <input type="text" name="meta_title" class="form-control"
+                                        <input type="text" formControlName="meta_title" class="form-control"
                                             placeholder="please enter meta_title" required>
 
-                                        <div class="invalid-feedback">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="companySettingsForm.get('meta_title')?.invalid && companySettingsForm.get('meta_title')?.touched">
                                             Please fill in your meta_title
                                         </div>
 
@@ -224,10 +244,11 @@
                             <div class="form-group mb-4">
                                 <label class="col-form-label">Meta Description</label>
 
-                                <textarea name="meta_description" class="form-control" rows="4"
+                                <textarea formControlName="meta_description" class="form-control" rows="4"
                                     placeholder="Please enter meta description" required></textarea>
 
-                                <div class="invalid-feedback">
+                                <div class="text-danger mt-1"
+                                    *ngIf="companySettingsForm.get('meta_description')?.invalid && companySettingsForm.get('meta_description')?.touched">
                                     Please fill in your meta description
                                 </div>
                             </div>
@@ -236,10 +257,11 @@
                             <div class="form-group mb-4">
                                 <label class="col-form-label">Meta Keyword</label>
 
-                                <textarea name="meta_keyword" class="form-control" rows="3"
+                                <textarea formControlName="meta_keyword" class="form-control" rows="3"
                                     placeholder="keyword1, keyword2, keyword3" required></textarea>
 
-                                <div class="invalid-feedback">
+                                <div class="text-danger mt-1"
+                                    *ngIf="companySettingsForm.get('meta_keyword')?.invalid && companySettingsForm.get('meta_keyword')?.touched">
                                     Please fill in your meta keywords
                                 </div>
                             </div>
@@ -248,10 +270,11 @@
                             <div class="form-group mb-4">
                                 <label class="col-form-label">Page Title</label>
 
-                                <input type="text" name="page_title" class="form-control" placeholder="Enter page title"
-                                    required>
+                                <input type="text" formControlName="page_title" class="form-control"
+                                    placeholder="Enter page title" required>
 
-                                <div class="invalid-feedback">
+                                <div class="text-danger mt-1"
+                                    *ngIf="companySettingsForm.get('page_title')?.invalid && companySettingsForm.get('page_title')?.touched">
                                     Please fill in your page title
                                 </div>
                             </div>
@@ -260,8 +283,9 @@
 
                             <div class="form-group mb-4">
                                 <div class="text-right m-4">
-                                    <button class="btn btn-primary" type="submit">Submit</button>
-                                    <button type="button" class="btn btn-primary ml-2">Reset</button>
+                                    <button class="btn btn-primary" type="submit"> {{ isEditMode ? 'Update' : 'Save'
+                                        }}</button>
+                                    <a routerLink="/admin/company-settings" class="btn btn-secondary ml-2">Cancel</a>
                                 </div>
                             </div>
 

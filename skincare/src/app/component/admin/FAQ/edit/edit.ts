@@ -23,7 +23,7 @@ export class Edit implements OnInit {
   ) {
     this.faqForm = this.fb.group({
       question: ['', Validators.required],
-      answer: ['']
+      answer: ['', Validators.required],
     });
   }
 
@@ -51,6 +51,7 @@ export class Edit implements OnInit {
   }
 
   saveFaq(): void {
+    this.faqForm.markAllAsTouched();
     if (this.faqForm.invalid) return;
 
     const payload = { ...this.faqForm.value, id: this.faqId };
