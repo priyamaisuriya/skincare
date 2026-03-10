@@ -12,11 +12,11 @@ export class FaqService {
   constructor(private http: HttpClient) { }
 
   getAllFaqs(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+    return this.http.get<Faq>(this.apiUrl);
   }
 
-  getFaqById(id: number): Observable<Faq> {
-    return this.http.get<Faq>(`${this.apiUrl}/${id}`);
+  getFaqById(id: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
   createFaq(faq: Faq): Observable<Faq> {
