@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-list',
+  imports: [],
+=======
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +15,7 @@ import { User } from '../../../../models/user';
 @Component({
   selector: 'app-list',
   imports: [CommonModule, FormsModule],
+>>>>>>> 6a6e9a12b9f607e31fe8559c7ef39c427463f3a4
   templateUrl: './list.html',
   styleUrl: './list.css',
 })

@@ -16,7 +16,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped v_center" id="table-1">
+                            <table class="table table-striped v_center">
                                 <thead>
                                     <tr>
                                         <th>Id</th>
@@ -28,7 +28,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @for(state of state; track state.id){
+                                    <tr>
+                                        <td>{{state.id}}</td>
+                                        <td>{{state.name}}</td>
+                                        <td>{{state.code}}</td>
+                                        <td>
+                                            <a href="/admin/state/edit/{{state.id}}" class="btn btn-primary">
+                                                Edit
 
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <button (click)="deleteState(state.id)" class="btn btn-danger">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>

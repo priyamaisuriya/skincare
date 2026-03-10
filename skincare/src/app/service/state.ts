@@ -6,12 +6,12 @@ import { State } from '../models/state'
   providedIn: 'root',
 })
 export class StateService {
-  private apiUrl = 'http://127.0.0.1:8000/api/admin/state';
+  private apiUrl = 'http://127.0.0.1:8000/api/admin/states';
 
   constructor(private http: HttpClient) { }
 
-  getAllStates(): Observable<State[]> {
-    return this.http.get<State[]>(this.apiUrl);
+  getAllStates(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
   }
 
   getStateById(id: number): Observable<State> {
