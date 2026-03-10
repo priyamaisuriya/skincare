@@ -1,246 +1,221 @@
 <section class="section">
     <div class="section-header">
         <div class="section-header-back">
-            <a href="" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+            <a routerLink="/admin/users" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
         </div>
 
-        <h1>Manage users</h1>
+        <h1>{{ isEditMode ? 'Edit User' : 'Add User' }}</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-            <div class="breadcrumb-item">Manage users</div>
+            <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
+            <div class="breadcrumb-item"> <a routerLink="/admin/users">Manage users</a></div>
+            <div class="breadcrumb-item">{{ isEditMode ? 'Edit' : 'Add' }}</div>
         </div>
+
     </div>
 
     <div class="section-body">
-        <h2 class="section-title">Manage users</h2>
-        <p class="section-lead"> On this page you can create a new users and fill in all
-            fields.</p>
+        <h2 class="section-title">{{ isEditMode ? 'Edit User' : 'Add User' }}</h2>
+        <p class="section-lead"> On this page you can create a new users and fill in all fields.</p>
 
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Manage Your users</h4>
-
-                </div>
-                <div class="card-body">
-                    <div class="form-group mb-4">
-                        <label class="col-form-label">
-                            Image url</label>
-
-                        <div id="image-preview" class="image-preview" style="width: 150px; height: 150px;">
-                            <label for="image-upload" id="image-label">Choose File</label>
-                            <input type="file" name="image_url" id="image-upload" />
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <form [formGroup]="userForm" (ngSubmit)="saveUser()">
+                        <div class="card-header">
+                            <h4>{{ isEditMode ? 'Edit User' : 'Add User' }} </h4>
                         </div>
-
-                    </div>
-
-                    <div class="row">
-
-
-                        <div class="col-md-6">
+                        <div class="card-body">
                             <div class="form-group mb-4">
-                                <label class="col-form-label">User Name</label>
-                                <input type="text" name="name" id="name" class="form-control" value=""
-                                    placeholder="please enter user name" required>
-                                <div class="invalid-feedback">
-                                    Please fill in your user name
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row mb-4">
-                                <label class="col-form-label ">Password</label>
-                                <input type="text" name="password" id="password" class="form-control" value=""
-                                    placeholder="please enter password" required>
-                                <div class="invalid-feedback">
-                                    Please fill in your password
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-4">
-                                <label class="col-form-label">Email</label>
-                                <input type="text" name="email" id="email" class="form-control" value=""
-                                    placeholder="please enter productse email" required>
-                                <div class="invalid-feedback">
-                                    Please fill in your products email
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row mb-4">
-                                <label class="col-form-label">Phone Number</label>
-
-                                <input type="text" name="phone_number" id="phone_number" class="form-control" value=""
-                                    placeholder="please enter products phonenumber" required>
-                                <div class="invalid-feedback">
-                                    Please fill in your phonenumber
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <!-- first_name Field -->
-
-                        <div class="col-md-6">
-                            <div class="form-group mb-4">
-                                <label class="col-form-label">First Name</label>
-
-                                <input type="text" name="first_name" id="first_name" class="form-control" value=""
-                                    placeholder="please enter first_name" required>
-                                <div class="invalid-feedback">
-                                    Please fill in your first_name
+                                <label class="col-form-label">Profile Image</label>
+                                <div id="image-preview" class="image-preview"
+                                    [style.background-image]="imagePreview ? 'url(' + imagePreview + ')' : 'none'"
+                                    [style.background-size]="'cover'" [style.background-position]="'center'"
+                                    style="width: 150px; height: 150px; overflow: visible;">
+                                    <label for="image-upload" id="image-label"
+                                        style="width: calc(100% + 4px); left: -2px;">{{ imagePreview ? 'Change File' :
+                                        'Choose File' }}</label>
+                                    <input type="file" id="image-upload" (change)="onFileSelected($event)"
+                                        accept="image/*" style="display: none;" />
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- lastname Field -->
-
-                        <div class="col-md-6">
-                            <div class="form-group row mb-4">
-                                <label class="col-form-label ">Last Name</label>
-                                <input type="text" name="last_name" id="last_name" class="form-control" value=""
-                                    placeholder="please enter last_name" required>
-                                <div class="invalid-feedback">
-                                    Please fill in your last_name
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">User Name</label>
+                                        <input type="text" formControlName="name" class="form-control"
+                                            placeholder="Please enter user name">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched">
+                                            Please fill in your user name
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Password</label>
+                                        <input type="password" formControlName="password" class="form-control"
+                                            placeholder="Please enter password">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+                                            Please fill in your password
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-4">
-                                <label class="col-form-label">Address</label>
 
-                                <textarea name="address" id="address" class="form-control input-like-textarea"
-                                    placeholder="Enter your full address" rows="3" required></textarea>
-
-                                <div class="invalid-feedback">
-                                    Please enter your address
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Email</label>
+                                        <input type="email" formControlName="email" class="form-control"
+                                            placeholder="Please enter email">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+                                            Please fill in your email
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Phone Number</label>
+                                        <input type="text" formControlName="phone_number" class="form-control"
+                                            placeholder="Please enter phone number">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="userForm.get('phone_number')?.invalid && userForm.get('phone_number')?.touched">
+                                            Please fill in your phone number
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!--  city -->
-
-                        <div class="col-md-6">
-                            <div class="form-group row mb-4">
-                                <label class="col-form-label">City</label>
-
-                                <input type="text" name="city" id="city" class="form-control"
-                                    placeholder="Please enter city" required>
-
-                                <div class="invalid-feedback">
-                                    Please fill in your city
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">First Name</label>
+                                        <input type="text" formControlName="first_name" class="form-control"
+                                            placeholder="Please enter first name">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="userForm.get('first_name')?.invalid && userForm.get('first_name')?.touched">
+                                            Please fill in your first name
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Last Name</label>
+                                        <input type="text" formControlName="last_name" class="form-control"
+                                            placeholder="Please enter last name">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="userForm.get('last_name')?.invalid && userForm.get('last_name')?.touched">
+                                            Please fill in your last name
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-
-                    </div>
-                    <div class="row">
-
-                        <!-- State Field -->
-                        <div class="col-md-6">
-                            <div class="form-group mb-4">
-                                <label class="col-form-label">State</label>
-
-                                <input type="text" name="state" id="state" class="form-control"
-                                    placeholder="Please enter state" required>
-
-                                <div class="invalid-feedback">
-                                    Please enter your state
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Address</label>
+                                        <textarea formControlName="address" class="form-control"
+                                            placeholder="Enter your full address" rows="3"></textarea>
+                                        <div class="text-danger mt-1"
+                                            *ngIf="userForm.get('address')?.invalid && userForm.get('address')?.touched">
+                                            Please enter your address
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">City</label>
+                                        <input type="text" formControlName="city" class="form-control"
+                                            placeholder="Please enter city">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="userForm.get('city')?.invalid && userForm.get('city')?.touched">
+                                            Please enter your city
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Postal Code Field -->
-                        <div class="col-md-6">
-                            <div class="form-group row mb-4">
-                                <label class="col-form-label">Postal Code</label>
-
-                                <input type="text" name="postal_code" id="postal_code" class="form-control"
-                                    placeholder="Please enter postal code" required>
-
-                                <div class="invalid-feedback">
-                                    Please enter your postal code
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">State</label>
+                                        <input type="text" formControlName="state" class="form-control"
+                                            placeholder="Please enter state">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="userForm.get('state')?.invalid && userForm.get('state')?.touched">
+                                            Please enter your state
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Postal Code</label>
+                                        <input type="text" formControlName="postal_code" class="form-control"
+                                            placeholder="Please enter postal code">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="userForm.get('postal_code')?.invalid && userForm.get('postal_code')?.touched">
+                                            Please enter your postal code
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                    </div>
-                    <div class="row">
-                        <!-- Date of Birth Field -->
-                        <div class="col-md-6">
-                            <div class="form-group mb-4">
-                                <label class="col-form-label">Date of Birth</label>
-
-                                <input type="date" name="dob" id="dob" class="form-control" required>
-
-                                <div class="invalid-feedback">
-                                    Please enter your date of birth
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Date of Birth</label>
+                                        <input type="date" formControlName="dob" class="form-control">
+                                        <div class="text-danger mt-1"
+                                            *ngIf="userForm.get('dob')?.invalid && userForm.get('dob')?.touched">
+                                            Please enter your date of birth
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Type</label>
+                                        <select formControlName="type" class="form-control">
+                                            <option value="">Select type</option>
+                                            <option value="admin">Admin</option>
+                                            <option value="customer">Customer</option>
+                                        </select>
+                                        <div class="text-danger mt-1"
+                                            *ngIf="userForm.get('type')?.invalid && userForm.get('type')?.touched">
+                                            Please select user type
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-
-                        <div class="col-md-6">
-                            <div class="form-group row mb-4 align-items-center">
-                                <label class="col-form-label">Status</label>
-                                <div class="col-sm-12 col-md-7">
-                                    <label class="custom-switch d-flex align-items-center mb-0">
-                                        <input type="checkbox" name="status" value="1" class="custom-switch-input">
-                                        <span class="custom-switch-indicator me-2"></span>
-                                        <span class="custom-switch-description mb-0"></span>
-                                    </label>
-                                    <div class="invalid-feedback">
-                                        Please fill in your status
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Status</label>
+                                        <div class="col-sm-12">
+                                            <label class="custom-switch d-flex align-items-center mb-0">
+                                                <input type="checkbox" formControlName="status"
+                                                    class="custom-switch-input">
+                                                <span class="custom-switch-indicator me-2"></span>
+                                                <span class="custom-switch-description mb-0">Active</span>
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group mb-4">
-                                <label class="col-form-label">Type</label>
-
-                                <select name="type" id="type" class="form-control" required>
-                                    <option value="">Select type</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="customer">Customer</option>
-
-                                </select>
-
-                                <div class="invalid-feedback">
-                                    Please select user type
-                                </div>
-                            </div>
+                        <div class="card-footer text-right">
+                            <button class="btn btn-primary" type="submit">
+                                {{ isEditMode ? 'Update' : 'Save' }}
+                            </button>
+                            <a routerLink="/admin/users" class="btn btn-secondary ml-2">Cancel</a>
                         </div>
-                    </div>
+                    </form>
                 </div>
-
-            </div>
-        </div>
-
-
-        <div class="form-group mb-4">
-            <div class="text-right m-4">
-                <button class="btn btn-primary" type="submit">Submit</button>
-                <button type="button" class="btn btn-primary ml-2">Reset</button>
             </div>
         </div>
     </div>
-
-
-
-
 </section>

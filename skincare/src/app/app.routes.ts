@@ -9,7 +9,7 @@ import { Edit as UserEdit } from './component/admin/Users/edit/edit';
 
 import { List as SliderList } from './component/admin/Sliders/list/list';
 import { Edit as SliderEdit } from './component/admin/Sliders/edit/edit';
-import { Edit as CompanySettingEdit } from './component/admin/CompanySettings/edit/edit';
+import { CompanySettingsEdit } from './component/admin/CompanySettings/edit/edit';
 import { List as CategoriesList } from './component/admin/Categories/list/list';
 import { Edit as CategoriesEdit } from './component/admin/Categories/edit/edit';
 import { List as OrderList } from './component/admin/Order/list/list';
@@ -47,7 +47,7 @@ export const routes: Routes = [
             { path: 'admin/slider/create', component: SliderEdit },
             { path: 'admin/slider/edit/:id', component: SliderEdit },
 
-            { path: 'admin/CompanySettings/edit', component: CompanySettingEdit },
+            { path: 'admin/CompanySettings/edit', component: CompanySettingsEdit },
 
             { path: 'admin/categories', component: CategoriesList },
             { path: 'admin/categories/create', component: CategoriesEdit },

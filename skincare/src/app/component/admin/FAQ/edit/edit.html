@@ -24,8 +24,8 @@
                             required></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary mr-2" [disabled]="faqForm.invalid">
-                        {{ isEditMode ? 'Update FAQ' : 'Save FAQ' }}
+                    <button type="submit" class="btn btn-primary mr-2">
+                        {{ isEditMode ? 'Update ' : 'Save ' }}
                     </button>
 
                     <a routerLink="/admin/faq" class="btn btn-secondary">
