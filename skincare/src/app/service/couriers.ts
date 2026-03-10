@@ -19,7 +19,7 @@ export class CouriersService {
     return this.http.post(this.apiUrl, courier);
   }
   updateCourier(id: number, courier: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}`, courier);
+    return this.http.post(`${this.apiUrl}/${id}?_method=PUT`, courier);
   }
   deleteCourier(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);

@@ -4,7 +4,7 @@
         <h1>{{ isEditMode ? 'Edit Company Setting' : 'Add Company Setting' }}</h1>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
-            <div class="breadcrumb-item"><a routerLink="/admin/company-settings">Company Setting</a></div>
+            <div class="breadcrumb-item">Company Setting</div>
             <div class="breadcrumb-item">{{ isEditMode ? 'Edit Company Setting' : 'Add Company Setting' }}</div>
         </div>
     </div>
@@ -39,7 +39,7 @@
                                                 <label for="favicon-upload" id="favicon-label"
                                                     style="width: calc(100% + 4px); left: -2px;">{{ faviconPreview ?
                                                     'Change File' : 'Choose File' }}</label>
-                                                <input type="file" formControlName="favicon" id="favicon-upload"
+                                                <input type="file" id="favicon-upload"
                                                     (change)="onFaviconSelected($event)" accept="image/*"
                                                     style="display: none;" />
 
@@ -61,8 +61,8 @@
                                             <label for="logo-upload" id="logo-label"
                                                 style="width: calc(100% + 4px); left: -2px;">{{ logoPreview ? 'Change
                                                 File' : 'Choose File' }}</label>
-                                            <input type="file" formControlName="logo" id="logo-upload" accept="image/*"
-                                                style="display: none;" (change)="onLogoSelected($event)" />
+                                            <input type="file" id="logo-upload" (change)="onLogoSelected($event)"
+                                                accept="image/*" style="display: none;" />
 
 
                                         </div>
@@ -81,7 +81,8 @@
                                             placeholder="please enter name" required>
 
                                         <div class="text-danger mt-1"
-                                            *ngIf="companySettingsForm.get('name')?.invalid && companySettingsForm.get('name')?.touched">
+                                            *ngIf="companySettingsForm.get('name')?.invalid && companySettingsForm.get('name')?.touched  ">
+
                                             Please fill in your name
                                         </div>
 
@@ -285,7 +286,7 @@
                                 <div class="text-right m-4">
                                     <button class="btn btn-primary" type="submit"> {{ isEditMode ? 'Update' : 'Save'
                                         }}</button>
-                                    <a routerLink="/admin/company-settings" class="btn btn-secondary ml-2">Cancel</a>
+                                    <a routerLink="/admin/dashboard" class="btn btn-secondary ml-2">Cancel</a>
                                 </div>
                             </div>
 

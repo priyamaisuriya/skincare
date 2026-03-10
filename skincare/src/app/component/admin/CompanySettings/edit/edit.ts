@@ -3,6 +3,7 @@ import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CompanySettingsService } from '../../../../service/companysetting';
+
 @Component({
   selector: 'app-edit',
   standalone: true,
@@ -35,8 +36,6 @@ export class CompanySettingsEdit implements OnInit {
       instragram_url: ['', Validators.required],
       whatsapp_url: ['', Validators.required],
       site_name: ['', Validators.required],
-      logo: [''],
-      favicon: [''],
       meta_title: ['', Validators.required],
       meta_description: ['', Validators.required],
       meta_keyword: ['', Validators.required],
@@ -45,15 +44,21 @@ export class CompanySettingsEdit implements OnInit {
   }
 
   ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam) {
-      this.isEditMode = true;
-      this.companySettingsId = +idParam;
+    this.loadCompanySettings();
+  }
 
-      this.companySettingsService.getCompanySettingsById(this.companySettingsId).subscribe({
-        next: (response: any) => {
-          const rootData = response.data || response;
+  loadCompanySettings(): void {
+    // We fetch all records and default to the first one available
+    this.companySettingsService.getCompanySettings().subscribe({
+      next: (response: any) => {
+        // If it returns a standard wrapper
+        const results = response.data || response;
+        const rootData = Array.isArray(results) ? results[0] : results;
+
+        if (rootData) {
           console.log('Loaded Company Settings Data:', rootData);
+          this.isEditMode = true;
+          this.companySettingsId = rootData.id;
 
           this.companySettingsForm.patchValue({
             name: rootData.name,
@@ -77,12 +82,14 @@ export class CompanySettingsEdit implements OnInit {
           if (rootData.favicon) {
             this.faviconPreview = `http://127.0.0.1:8000/storage/${rootData.favicon}`;
           }
-        },
-        error: (err: any) => {
-          console.error('Error loading Company Settings:', err);
+        } else {
+          this.isEditMode = false;
         }
-      });
-    }
+      },
+      error: (err: any) => {
+        console.error('Error loading Company Settings:', err);
+      }
+    });
   }
 
   onLogoSelected(event: any): void {
@@ -114,19 +121,19 @@ export class CompanySettingsEdit implements OnInit {
     if (this.companySettingsForm.invalid) return;
 
     const formData = new FormData();
-    formData.append('name', this.companySettingsForm.get('name')?.value);
-    formData.append('description', this.companySettingsForm.get('description')?.value);
-    formData.append('email', this.companySettingsForm.get('email')?.value);
-    formData.append('phone_number', this.companySettingsForm.get('phone_number')?.value);
-    formData.append('address', this.companySettingsForm.get('address')?.value);
-    formData.append('facebook_url', this.companySettingsForm.get('facebook_url')?.value);
-    formData.append('instragram_url', this.companySettingsForm.get('instragram_url')?.value);
-    formData.append('whatsapp_url', this.companySettingsForm.get('whatsapp_url')?.value);
-    formData.append('site_name', this.companySettingsForm.get('site_name')?.value);
-    formData.append('meta_title', this.companySettingsForm.get('meta_title')?.value);
-    formData.append('meta_description', this.companySettingsForm.get('meta_description')?.value);
-    formData.append('meta_keyword', this.companySettingsForm.get('meta_keyword')?.value);
-    formData.append('page_title', this.companySettingsForm.get('page_title')?.value);
+    formData.append('name', this.companySettingsForm.get('name')?.value || '');
+    formData.append('description', this.companySettingsForm.get('description')?.value || '');
+    formData.append('email', this.companySettingsForm.get('email')?.value || '');
+    formData.append('phone_number', this.companySettingsForm.get('phone_number')?.value || '');
+    formData.append('address', this.companySettingsForm.get('address')?.value || '');
+    formData.append('facebook_url', this.companySettingsForm.get('facebook_url')?.value || '');
+    formData.append('instragram_url', this.companySettingsForm.get('instragram_url')?.value || '');
+    formData.append('whatsapp_url', this.companySettingsForm.get('whatsapp_url')?.value || '');
+    formData.append('site_name', this.companySettingsForm.get('site_name')?.value || '');
+    formData.append('meta_title', this.companySettingsForm.get('meta_title')?.value || '');
+    formData.append('meta_description', this.companySettingsForm.get('meta_description')?.value || '');
+    formData.append('meta_keyword', this.companySettingsForm.get('meta_keyword')?.value || '');
+    formData.append('page_title', this.companySettingsForm.get('page_title')?.value || '');
 
     if (this.logoFile) {
       formData.append('logo', this.logoFile);
@@ -135,10 +142,11 @@ export class CompanySettingsEdit implements OnInit {
       formData.append('favicon', this.faviconFile);
     }
 
-    if (this.isEditMode) {
+    if (this.isEditMode && this.companySettingsId > 0) {
       this.companySettingsService.updateCompanySettings(this.companySettingsId, formData).subscribe({
         next: () => {
-          this.router.navigate(['/admin/company-settings']);
+          alert('Company Settings updated successfully!');
+          this.loadCompanySettings();
         },
         error: (err: any) => {
           console.error('Error updating Company Settings:', err);
@@ -147,7 +155,8 @@ export class CompanySettingsEdit implements OnInit {
     } else {
       this.companySettingsService.createCompanySettings(formData).subscribe({
         next: () => {
-          this.router.navigate(['/admin/company-settings']);
+          alert('Company Settings created successfully!');
+          this.loadCompanySettings();
         },
         error: (err: any) => {
           console.error('Error creating Company Settings:', err);

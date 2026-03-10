@@ -22,9 +22,9 @@ export class List implements OnInit {
   }
   loadCategories() {
     this.categoriesService.getAllCategories().subscribe({
-      next: (data) => {
-        this.categories = data;
-        console.log(data);
+      next: (data: any) => {
+        this.categories = data.data || data;
+        console.log(this.categories);
       },
       error: (error) => {
         console.error('Error fetching categories:', error);
@@ -32,13 +32,17 @@ export class List implements OnInit {
     });
   }
   deleteCategory(id: number) {
-    this.categoriesService.deleteCategory(id).subscribe({
-      next: () => {
-        this.loadCategories();
-      },
-      error: (error) => {
-        console.error('Error deleting category:', error);
-      }
-    });
+    if (confirm('Are you sure you want to delete this category?')) {
+      this.categoriesService.deleteCategory(id).subscribe({
+        next: () => {
+          alert('Category deleted successfully!');
+          this.loadCategories();
+        },
+        error: (error) => {
+          console.error('Error deleting category:', error);
+          alert('Failed to delete category.');
+        }
+      });
+    }
   }
 }

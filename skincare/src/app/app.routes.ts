@@ -3,15 +3,15 @@ import { Sidebar } from './component/admin/layout/sidebar/sidebar';
 import { Header } from './component/admin/layout/header/header';
 import { Layout } from './component/admin/layout/layout';
 import { List as CourierList } from './component/admin/Couriers/list/list';
-import { Edit as CourierEdit } from './component/admin/Couriers/edit/edit';
+import { CourierEdit } from './component/admin/Couriers/edit/edit';
 import { List as UserList } from './component/admin/Users/list/list';
-import { Edit as UserEdit } from './component/admin/Users/edit/edit';
+import { UserEdit } from './component/admin/Users/edit/edit';
 
 import { List as SliderList } from './component/admin/Sliders/list/list';
 import { Edit as SliderEdit } from './component/admin/Sliders/edit/edit';
 import { CompanySettingsEdit } from './component/admin/CompanySettings/edit/edit';
 import { List as CategoriesList } from './component/admin/Categories/list/list';
-import { Edit as CategoriesEdit } from './component/admin/Categories/edit/edit';
+import { CategoriesEdit } from './component/admin/Categories/edit/edit';
 import { List as OrderList } from './component/admin/Order/list/list';
 import { Edit as OrderEdit } from './component/admin/Order/edit/edit';
 import { List as StateList } from './component/admin/State/list/list';

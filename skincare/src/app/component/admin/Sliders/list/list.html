@@ -2,14 +2,17 @@
     <div class="section-header">
         <h1>Manage Sliders</h1>
         <div class="section-header-button">
-            <a href="/admin/slider/create" class="btn btn-primary">Add New </a>
+            <a routerLink="/admin/slider/create" class="btn btn-primary">Add New </a>
         </div>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="">Dashboard</a></div>
+            <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
+            <div class="breadcrumb-item">Manage Sliders</div>
         </div>
     </div>
 
     <div class="section-body">
+        <h2 class="section-title">Sliders List</h2>
+        <p class="section-lead">On this page you can manage your sliders and adjust their display order.</p>
 
         <div class="row">
             <div class="col-12">
@@ -21,7 +24,7 @@
                                     <tr>
                                         <th>Id</th>
                                         <th>Name</th>
-                                        <th>Image url</th>
+                                        <th>Image</th>
                                         <th>Sort Order</th>
                                         <th>Status</th>
                                         <th>Edit</th>
@@ -35,12 +38,21 @@
                                     <tr>
                                         <td>{{slider.id}}</td>
                                         <td>{{slider.name}}</td>
-                                        <td> <img src="http://127.0.0.1:8000/storage/{{slider.image_url}}"
-                                                alt="{{slider.name}}" width="100"></td>
-                                        <td>{{slider.sort_order}}</td>
-                                        <td>{{slider.status}}</td>
                                         <td>
-                                            <a href="/admin/slider/edit/{{slider.id}}" class="btn btn-primary">Edit</a>
+                                            <img src="http://127.0.0.1:8000/storage/{{slider.image_url}}"
+                                                alt="{{slider.name}}" width="50" height="50"
+                                                style="border-radius: 50%; object-fit: cover;">
+                                        </td>
+                                        <td>{{slider.sort_order}}</td>
+                                        <td>
+                                            <div class="badge"
+                                                [ngClass]="slider.status ? 'badge-success' : 'badge-danger'">
+                                                {{ slider.status ? 'Active' : 'Inactive' }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a [routerLink]="['/admin/slider/edit', slider.id]"
+                                                class="btn btn-primary">Edit</a>
                                         </td>
                                         <td>
                                             <button (click)="deleteSlider(slider.id)" class="btn btn-danger">

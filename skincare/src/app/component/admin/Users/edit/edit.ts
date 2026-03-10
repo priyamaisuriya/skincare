@@ -6,11 +6,12 @@ import { UsersService } from '../../../../service/user';
 
 @Component({
   selector: 'app-edit',
+  standalone: true,
   imports: [CommonModule, RouterLink, ReactiveFormsModule],
   templateUrl: './edit.html',
   styleUrl: './edit.css',
 })
-export class Edit implements OnInit {
+export class UserEdit implements OnInit {
   userForm!: FormGroup;
   isEditMode = false;
   userId: number = 0;
@@ -25,13 +26,11 @@ export class Edit implements OnInit {
   ) {
     this.userForm = this.fb.group({
       name: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      role: ['', Validators.required],
-      status: [false],
+      email: ['', [Validators.required, Validators.email]],
+      password: [''],
+      status: [true],
       phone_number: ['', Validators.required],
       address: ['', Validators.required],
-      profile_image: [''],
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       dob: ['', Validators.required],
@@ -56,12 +55,9 @@ export class Edit implements OnInit {
           this.userForm.patchValue({
             name: rootData.name,
             email: rootData.email,
-            password: rootData.password,
-            role: rootData.role,
             status: rootData.status == 1 || rootData.status == true,
             phone_number: rootData.phone_number,
             address: rootData.address,
-            profile_image: rootData.profile_image,
             first_name: rootData.first_name,
             last_name: rootData.last_name,
             dob: rootData.dob,
@@ -70,6 +66,7 @@ export class Edit implements OnInit {
             state: rootData.state,
             postal_code: rootData.postal_code,
           });
+
           if (rootData.profile_image) {
             this.imagePreview = `http://127.0.0.1:8000/storage/${rootData.profile_image}`;
           }
@@ -78,8 +75,12 @@ export class Edit implements OnInit {
           console.error('Error loading User:', err);
         }
       });
+    } else {
+      this.userForm.get('password')?.setValidators([Validators.required]);
+      this.userForm.get('password')?.updateValueAndValidity();
     }
   }
+
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -94,48 +95,62 @@ export class Edit implements OnInit {
   }
 
   saveUser(): void {
+    console.log('Attempting to save user...');
     this.userForm.markAllAsTouched();
-    if (this.userForm.invalid) return;
+
+    if (this.userForm.invalid) {
+      console.warn('User form is invalid. Details:');
+      Object.keys(this.userForm.controls).forEach(key => {
+        const control = this.userForm.get(key);
+        if (control?.invalid) {
+          console.log(`- ${key}:`, control.errors);
+        }
+      });
+      return;
+    }
 
     const formData = new FormData();
-    formData.append('name', this.userForm.value.name);
-    formData.append('email', this.userForm.value.email);
-    formData.append('password', this.userForm.value.password);
-    formData.append('role', this.userForm.value.role);
-    formData.append('status', this.userForm.value.status);
-    formData.append('phone_number', this.userForm.value.phone_number);
-    formData.append('address', this.userForm.value.address);
-    formData.append('profile_image', this.userForm.value.profile_image);
-    formData.append('first_name', this.userForm.value.first_name);
-    formData.append('last_name', this.userForm.value.last_name);
-    formData.append('dob', this.userForm.value.dob);
-    formData.append('type', this.userForm.value.type);
-    formData.append('city', this.userForm.value.city);
-    formData.append('state', this.userForm.value.state);
-    formData.append('postal_code', this.userForm.value.postal_code);
+    formData.append('name', this.userForm.get('name')?.value || '');
+    formData.append('email', this.userForm.get('email')?.value || '');
+
+    const password = this.userForm.get('password')?.value;
+    if (password) {
+      formData.append('password', password);
+    }
+
+    // Using 'type' as the role/type field since 'role' was missing from HTML
+    formData.append('role', this.userForm.get('type')?.value || 'customer');
+    formData.append('status', this.userForm.get('status')?.value ? '1' : '0');
+    formData.append('phone_number', this.userForm.get('phone_number')?.value || '');
+    formData.append('address', this.userForm.get('address')?.value || '');
+    formData.append('first_name', this.userForm.get('first_name')?.value || '');
+    formData.append('last_name', this.userForm.get('last_name')?.value || '');
+    formData.append('dob', this.userForm.get('dob')?.value || '');
+    formData.append('type', this.userForm.get('type')?.value || '');
+    formData.append('city', this.userForm.get('city')?.value || '');
+    formData.append('state', this.userForm.get('state')?.value || '');
+    formData.append('postal_code', this.userForm.get('postal_code')?.value || '');
 
     if (this.selectedFile) {
       formData.append('profile_image', this.selectedFile);
     }
 
-    if (this.isEditMode) {
-      this.usersService.updateUser(this.userId, formData).subscribe({
-        next: () => {
-          this.router.navigate(['/admin/users']);
-        },
-        error: (err: any) => {
-          console.error('Error updating User:', err);
-        }
-      });
-    } else {
-      this.usersService.createUser(formData).subscribe({
-        next: () => {
-          this.router.navigate(['/admin/users']);
-        },
-        error: (err: any) => {
-          console.error('Error creating User:', err);
-        }
-      });
-    }
+    console.log('Form data prepared, sending to server...');
+
+    const request = this.isEditMode
+      ? this.usersService.updateUser(this.userId, formData)
+      : this.usersService.createUser(formData);
+
+    request.subscribe({
+      next: (resp) => {
+        console.log('User saved successfully:', resp);
+        alert(this.isEditMode ? 'User updated successfully!' : 'User created successfully!');
+        this.router.navigate(['/admin/user']);
+      },
+      error: (err: any) => {
+        console.error('Error saving User:', err);
+        alert('Failed to save user. Check console for error details.');
+      }
+    });
   }
-}   
+}

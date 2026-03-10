@@ -24,8 +24,8 @@ export class List implements OnInit {
 
   loadusers() {
     this.userService.getAllUsers().subscribe({
-      next: (data) => {
-        this.users = data;
+      next: (data: any) => {
+        this.users = data.data || data;
         console.log(this.users);
       },
       error: (err: any) => {
