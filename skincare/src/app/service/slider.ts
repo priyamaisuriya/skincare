@@ -19,12 +19,12 @@ export class SliderService {
     return this.http.get<Slider>(`${this.apiUrl}/${id}`);
   }
 
-  createSlider(slider: Slider): Observable<Slider> {
+  createSlider(slider: any): Observable<Slider> {
     return this.http.post<Slider>(this.apiUrl, slider);
   }
 
-  updateSlider(id: number, slider: Slider): Observable<Slider> {
-    return this.http.put<Slider>(`${this.apiUrl}/${id}`, slider);
+  updateSlider(id: number, slider: any): Observable<Slider> {
+    return this.http.post<Slider>(`${this.apiUrl}/${id}?_method=PUT`, slider);
   }
 
   deleteSlider(id: number): Observable<void> {

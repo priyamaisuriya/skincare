@@ -1,7 +1,7 @@
 <section class="section">
 
     <div class="section-header">
-        <h1>Add FAQ</h1>
+        <h1>{{ isEditMode ? 'Edit FAQ' : 'Add FAQ' }}</h1>
     </div>
 
     <div class="section-body">
@@ -9,27 +9,26 @@
         <div class="card">
             <div class="card-body">
 
-                <form action="/admin/faq/create" method="POST">
-
-
+                <form [formGroup]="faqForm" (ngSubmit)="saveFaq()">
 
                     <div class="form-group">
                         <label>Question</label>
-                        <input type="text" name="question" class="form-control" placeholder="Enter Question" required>
+                        <input type="text" formControlName="question" class="form-control" placeholder="Enter Question"
+                            required>
                     </div>
 
                     <!-- {{-- Answer --}} -->
                     <div class="form-group">
                         <label>Answer</label>
-                        <textarea name="answer" class="form-control" rows="5" placeholder="Enter Answer"
+                        <textarea formControlName="answer" class="form-control" rows="5" placeholder="Enter Answer"
                             required></textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-primary mr-2">
-                        Save FAQ
+                    <button type="submit" class="btn btn-primary mr-2" [disabled]="faqForm.invalid">
+                        {{ isEditMode ? 'Update FAQ' : 'Save FAQ' }}
                     </button>
 
-                    <a href="/admin/faq" class="btn btn-secondary">
+                    <a routerLink="/admin/faq" class="btn btn-secondary">
                         Cancel
                     </a>
 

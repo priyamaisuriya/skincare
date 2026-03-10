@@ -1,128 +1,126 @@
 <section class="section">
     <div class="section-header">
         <div class="section-header-back">
-            <a href="" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+            <a routerLink="/admin/sliders" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
         </div>
 
-        <h1>Manage Sliders</h1>
+        <h1>{{ isEditMode ? 'Edit Slider' : 'Add Slider' }}</h1>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
-            <div class="breadcrumb-item">Manage Sliders</div>
+            <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
+            <div class="breadcrumb-item"><a routerLink="/admin/sliders">Manage Sliders</a></div>
+            <div class="breadcrumb-item">{{ isEditMode ? 'Edit' : 'Add' }}</div>
         </div>
     </div>
 
     <div class="section-body">
-        <h2 class="section-title">Manage Sliders</h2>
-        <p class="section-lead"> On this page you can create a new sliders and fill in all
-            fields.</p>
+        <h2 class="section-title">{{ isEditMode ? 'Edit Slider' : 'Add Slider' }}</h2>
+        <p class="section-lead"> On this page you can {{ isEditMode ? 'edit an existing' : 'create a new' }} slider and
+            fill in all fields.</p>
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Manage Your Sliders</h4>
-
+                        <h4>{{ isEditMode ? 'Edit Your Slider' : 'Add New Slider' }}</h4>
                     </div>
                     <div class="card-body">
-                        <div class="form-group  mb-4">
-                            <label class="col-form-label">
-                                Image url</label>
+                        <form [formGroup]="sliderForm" (ngSubmit)="saveSlider()">
 
-                            <div id="image-preview" class="image-preview" style="width: 150px; height: 150px;">
-                                <label for="image-upload" id="image-label">Choose File</label>
-                                <input type="file" name="image_url" id="image-upload" />
+                            <div class="form-group mb-4">
+                                <label class="col-form-label">Image upload</label>
+                                <div id="image-preview" class="image-preview"
+                                    [style.background-image]="imagePreview ? 'url(' + imagePreview + ')' : 'none'"
+                                    [style.background-size]="'cover'" [style.background-position]="'center'"
+                                    style="width: 250px; height: 150px; border: 1px dashed #ced4da; display: flex; align-items: center; justify-content: center; position: relative;">
+                                    <label for="image-upload" id="image-label"
+                                        style="position: absolute; bottom: 5px; left: 5px; background: rgba(0,0,0,0.5); color: white; padding: 2px 8px; cursor: pointer;">{{
+                                        imagePreview ? 'Change File' : 'Choose File' }}</label>
+                                    <input type="file" name="image_url" id="image-upload"
+                                        (change)="onFileSelected($event)" accept="image/*" style="display: none;" />
+                                </div>
                             </div>
 
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-4">
-                                    <label class="col-form-label">Name</label>
-
-                                    <input type="text" name="name" id="name" class="form-control"
-                                        placeholder="please enter name" required>
-                                    <div class="invalid-feedback">
-                                        Please fill in your name
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Name</label>
+                                        <input type="text" formControlName="name" class="form-control"
+                                            placeholder="Please enter name" required>
+                                        <div class="text-danger mt-1"
+                                            *ngIf="sliderForm.get('name')?.invalid && sliderForm.get('name')?.touched">
+                                            Please fill in the slider name.
+                                        </div>
                                     </div>
-
-
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label ">Description</label>
-                                    <textarea class="summernote-simple form-control" name="description"
-                                        id="slider_description" placeholder="Please enter slider description"
-                                        required></textarea>
-
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group  mb-4">
-                                    <label class="col-form-label">Link</label>
-
-                                    <input type="text" name="link" id="link" class="form-control"
-                                        placeholder="please enter link" required>
-                                    <div class="invalid-feedback">
-                                        Please fill in your link
-                                    </div>
-
-
-                                </div>
-                            </div>
-
-
-
-                            <div class="col-md-6">
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label">Sort
-                                        Order</label>
-
-                                    <input type="number" name="sort_order" id="sort_order" class="form-control"
-                                        placeholder="please enter sort_order" required>
-                                    <div class="invalid-feedback">
-                                        Please fill in your sort_order
-                                    </div>
-
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group row mb-4 align-items-center">
-                                <label class="col-form-label">Status</label>
-                                <div class="col-sm-12 col-md-7">
-                                    <label class="custom-switch d-flex align-items-center mb-0">
-                                        <input type="checkbox" name="status" value="1" class="custom-switch-input">
-                                        <span class="custom-switch-indicator me-2"></span>
-                                        <span class="custom-switch-description mb-0"></span>
-                                    </label>
-                                    <div class="invalid-feedback">
-                                        Please fill in your status
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Description</label>
+                                        <textarea class="form-control" formControlName="description"
+                                            placeholder="Please enter slider description" required rows="3"></textarea>
+                                        <div class="text-danger mt-1"
+                                            *ngIf="sliderForm.get('description')?.invalid && sliderForm.get('description')?.touched">
+                                            Please fill in the description.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Link</label>
+                                        <input type="text" formControlName="link" class="form-control"
+                                            placeholder="Please enter link" required>
+                                        <div class="text-danger mt-1"
+                                            *ngIf="sliderForm.get('link')?.invalid && sliderForm.get('link')?.touched">
+                                            Please fill in the link.
+                                        </div>
+                                    </div>
+                                </div>
 
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label class="col-form-label">Sort Order</label>
+                                        <input type="number" formControlName="sort_order" class="form-control"
+                                            placeholder="Please enter sort_order" required>
+                                        <div class="text-danger mt-1"
+                                            *ngIf="sliderForm.get('sort_order')?.invalid && sliderForm.get('sort_order')?.touched">
+                                            Please fill in the sort order.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group row mb-4 align-items-center">
+                                        <label class="col-form-label col-sm-12">Status</label>
+                                        <div class="col-sm-12">
+                                            <label class="custom-switch d-flex align-items-center mb-0 pl-0">
+                                                <input type="checkbox" formControlName="status"
+                                                    class="custom-switch-input">
+                                                <span class="custom-switch-indicator me-2"></span>
+                                                <span class="custom-switch-description mb-0">Active</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-4 mt-4">
+                                <div class="text-right">
+                                    <button class="btn btn-primary mr-2" type="submit" [disabled]="sliderForm.invalid">
+                                        {{ isEditMode ? 'Update Slider' : 'Save Slider' }}
+                                    </button>
+                                    <a routerLink="/admin/sliders" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+
+                        </form>
                     </div>
                 </div>
 
-
-                <div class="form-group mb-4">
-                    <div class="text-right m-4">
-                        <button class="btn btn-primary" type="submit">Submit</button>
-                        <button type="button" class="btn btn-primary ml-2">Reset</button>
-                    </div>
-                </div>
             </div>
-
         </div>
     </div>
-
 </section>
