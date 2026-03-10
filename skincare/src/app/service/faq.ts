@@ -11,8 +11,9 @@ export class FaqService {
 
   constructor(private http: HttpClient) { }
 
-  getAllFaqs(): Observable<any> {
-    return this.http.get<Faq>(this.apiUrl);
+  getAllFaqs(): Observable<Faq[]> {
+    // API returns an array of FAQ objects
+    return this.http.get<Faq[]>(this.apiUrl);
   }
 
   getFaqById(id: number): Observable<any> {
