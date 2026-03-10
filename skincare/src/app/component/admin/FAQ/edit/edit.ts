@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-
-@Component({
-  selector: 'app-edit',
-  imports: [FormsModule, CommonModule],
-=======
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -16,7 +7,6 @@ import { FaqService } from '../../../../service/faq';
 @Component({
   selector: 'app-edit',
   imports: [RouterLink, ReactiveFormsModule, CommonModule],
->>>>>>> fc950fd16330c7289e6db16fa353894b1f440c5e
   templateUrl: './edit.html',
   styleUrl: './edit.css',
 })
