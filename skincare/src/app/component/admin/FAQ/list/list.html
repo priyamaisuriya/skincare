@@ -24,7 +24,8 @@
                     <div class="card-body">
                         <div class="table-responsive">
 
-                            <table class="table table-striped v_center" id="faq-table">
+                            <table class="table table-striped" id="faq-table">
+
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -35,12 +36,11 @@
                                 </thead>
 
                                 <tbody>
-                                    @for(faq of faqs; track faq.id){
-                                    <tr>
+                                    <tr *ngFor="let faq of faqs | async">
                                         <td>{{faq.id}}</td>
                                         <td>{{faq.question}}</td>
                                         <td>
-                                            <a href="/admin/faq/edit/{{faq.id}}" class="btn btn-primary">
+                                            <a [routerLink]="['/admin/faq/edit', faq.id]" class="btn btn-primary">
                                                 Edit
                                             </a>
                                         </td>
@@ -50,7 +50,6 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    }
                                 </tbody>
 
                             </table>

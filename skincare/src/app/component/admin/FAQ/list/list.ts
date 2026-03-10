@@ -1,17 +1,29 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { BehaviorSubject, Observable, take } from 'rxjs';
 import { FaqService } from '../../../../service/faq';
 import { Faq } from '../../../../models/faq';
+
+declare const $: any;
+
 @Component({
   selector: 'app-list',
-  imports: [FormsModule, CommonModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './list.html',
-  styleUrl: './list.css',
+  styleUrls: ['./list.css']
 })
 export class List implements OnInit {
-  faqs: Faq[] = [];
-  constructor(private faqService: FaqService) { }
+  private faqsSubject = new BehaviorSubject<Faq[]>([]);
+  faqs: Observable<Faq[]> = this.faqsSubject.asObservable();
+  errorMessage: string = '';
+
+  constructor(
+    private faqService: FaqService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
+
 
   ngOnInit(): void {
     this.loadFaqs();
@@ -19,26 +31,41 @@ export class List implements OnInit {
 
   loadFaqs(): void {
     this.faqService.getAllFaqs().subscribe({
-      next: (data) => {
-        this.faqs = data;
-        console.log('data.', data)
+      next: data => {
+        this.faqsSubject.next(data);
 
+        if (isPlatformBrowser(this.platformId)) {
+          // delay slightly so DOM has updated before invoking jQuery
+          setTimeout(() => {
+            this.initDataTable();
+          }, 0);
+        }
       },
-      error: (err) => {
-        console.error('Error loading FAQs:', err);
+      error: err => {
+        this.errorMessage = err.message;
       }
     });
   }
 
+  initDataTable(): void {
+    if (!isPlatformBrowser(this.platformId) || typeof $ === 'undefined') {
+      return;
+    }
+
+    if ($.fn.DataTable.isDataTable('#faq-table')) {
+      $('#faq-table').DataTable().destroy();
+    }
+
+    $('#faq-table').DataTable({
+      columnDefs: [{ orderable: false, targets: [2, 3] }]
+    });
+  }
+
+
   deleteFaq(id: number): void {
-    if (confirm('Are you sure you want to delete this FAQ?')) {
-      this.faqService.deleteFaq(id).subscribe({
-        next: () => {
-          this.loadFaqs();
-        },
-        error: (err) => {
-          console.error('Error deleting FAQ:', err);
-        }
+    if (confirm('Delete this FAQ?')) {
+      this.faqService.deleteFaq(id).subscribe(() => {
+        this.loadFaqs();
       });
     }
   }
