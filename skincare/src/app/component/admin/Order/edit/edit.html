@@ -5,11 +5,18 @@
             <a routerLink="/admin/orders" class="btn btn-icon mr-3">
                 <i class="fas fa-arrow-left"></i>
             </a>
-            <h1 class="mb-0">Order #</h1>
+            <h1>{{isEditMode ? 'Edit Order' : 'Add Order'}}</h1>
+            <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
+            <div class="breadcrumb-item"><a routerLink="/admin/orders">Manage Orders</a></div>
+            <div class="breadcrumb-item">{{ isEditMode ? 'Edit' : 'Add' }}</div>
+
         </div>
     </div>
 
     <div class="section-body">
+        <h2 class="section-title">{{isEditMode ? 'Edit Order' : 'Add Order'}}</h2>
+        <p class="section-lead">On this page you can {{isEditMode ? 'edit existing' : 'create new'}} orders and fill
+            in all fields.</p>
 
 
 
@@ -20,7 +27,7 @@
             <div class="col-lg-8">
                 <div class="card shadow-sm">
                     <div class="card-header">
-                        <h4>Order Details</h4>
+                        <h4>{{isEditMode ? 'Edit Order' : 'Add Order'}} </h4>
                     </div>
                     <div class="card-body table-responsive">
 
@@ -71,16 +78,16 @@
                     </div>
                     <div class="card-body">
 
-                        <form>
+                        <form [formGroup]="orderForm" (ngSubmit)="updateOrder()">
                             <div class="form-group">
                                 <label>Select Status</label>
-                                <select name="status" class="form-control">
+                                <select formControlName="status" class="form-control">
 
                                 </select>
                             </div>
 
                             <button type="submit" class="btn btn-primary btn-block mt-3">
-                                Update Order
+                                {{ isEditMode ? 'Update Order' : 'Add Order' }}
                             </button>
 
                         </form>

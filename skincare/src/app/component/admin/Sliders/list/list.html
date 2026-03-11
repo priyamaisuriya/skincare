@@ -11,15 +11,15 @@
     </div>
 
     <div class="section-body">
-        <h2 class="section-title">Sliders List</h2>
-        <p class="section-lead">On this page you can manage your sliders and adjust their display order.</p>
+        <!-- <h2 class="section-title">Sliders List</h2>
+        <p class="section-lead">On this page you can manage your sliders and adjust their display order.</p> -->
 
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped v_center">
+                            <table class="table table-striped" id="sliders-table">
                                 <thead>
                                     <tr>
                                         <th>Id</th>
@@ -34,8 +34,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @for(slider of sliders; track slider.id){
-                                    <tr>
+                                    <tr *ngFor="let slider of sliders$ | async">
                                         <td>{{slider.id}}</td>
                                         <td>{{slider.name}}</td>
                                         <td>
@@ -60,7 +59,6 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    }
                                 </tbody>
                             </table>
                         </div>

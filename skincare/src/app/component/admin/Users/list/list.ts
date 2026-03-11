@@ -1,22 +1,31 @@
 
 
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { BehaviorSubject, Observable, take } from 'rxjs';
 import { UsersService } from '../../../../service/user';
 import { User } from '../../../../models/user';
 
+declare const $: any;
 
 @Component({
   selector: 'app-list',
-  imports: [CommonModule, FormsModule],
-
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './list.html',
   styleUrl: './list.css',
 })
 export class List implements OnInit {
-  users: User[] = [];
-  constructor(private userService: UsersService) { }
+  private usersSubject = new BehaviorSubject<User[]>([]);
+  users: Observable<User[]> = this.usersSubject.asObservable();
+  errorMessage: string = '';
+
+  constructor(
+    private userService: UsersService,
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   ngOnInit(): void {
     this.loadusers();
@@ -25,23 +34,45 @@ export class List implements OnInit {
   loadusers() {
     this.userService.getAllUsers().subscribe({
       next: (data: any) => {
-        this.users = data.data || data;
-        console.log(this.users);
+        const usersData = data.data || data;
+        this.usersSubject.next(usersData);
+        this.cdr.detectChanges(); // This ensures rows are rendered before DataTables starts
+
+        if (isPlatformBrowser(this.platformId)) {
+          setTimeout(() => {
+            this.initDataTable();
+          }, 100);
+        }
       },
       error: (err: any) => {
         console.error('Error loading users:', err);
       }
     });
   }
+
+  initDataTable(): void {
+    if (!isPlatformBrowser(this.platformId) || typeof $ === 'undefined') {
+      return;
+    }
+
+    if ($.fn.DataTable.isDataTable('#users-table')) {
+      $('#users-table').DataTable().destroy();
+    }
+
+    $('#users-table').DataTable({
+      columnDefs: [{ orderable: false, targets: [4, 5, 6] }]
+    });
+  }
+
   deleteUser(id: number): void {
     if (confirm('Are you sure you want to delete this user?')) {
-      this.userService.deleteUser(id).subscribe({
-        next: () => {
-          this.loadusers();
-        },
-        error: (err: any) => {
-          console.error('Error deleting user:', err);
-        }
+      this.userService.deleteUser(id).subscribe(() => {
+        // next: () => {
+        this.loadusers();
+        // },
+        // error: (err: any) => {
+        //   console.error('Error deleting user:', err);
+        // }
       });
     }
   }

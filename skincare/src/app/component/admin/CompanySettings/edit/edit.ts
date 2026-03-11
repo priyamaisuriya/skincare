@@ -29,17 +29,17 @@ export class CompanySettingsEdit implements OnInit {
     this.companySettingsForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       phone_number: ['', Validators.required],
       address: ['', Validators.required],
-      facebook_url: ['', Validators.required],
-      instragram_url: ['', Validators.required],
-      whatsapp_url: ['', Validators.required],
+      facebook_url: [''],
+      instagram_url: [''],
+      whatsapp_url: [''],
       site_name: ['', Validators.required],
-      meta_title: ['', Validators.required],
-      meta_description: ['', Validators.required],
-      meta_keyword: ['', Validators.required],
-      page_title: ['', Validators.required],
+      meta_title: [''],
+      meta_description: [''],
+      meta_keyword: [''],
+      page_title: [''],
     });
   }
 
@@ -59,6 +59,7 @@ export class CompanySettingsEdit implements OnInit {
           console.log('Loaded Company Settings Data:', rootData);
           this.isEditMode = true;
           this.companySettingsId = rootData.id;
+          console.log('Final mapping data:', rootData);
 
           this.companySettingsForm.patchValue({
             name: rootData.name,
@@ -67,12 +68,12 @@ export class CompanySettingsEdit implements OnInit {
             phone_number: rootData.phone_number,
             address: rootData.address,
             facebook_url: rootData.facebook_url,
-            instragram_url: rootData.instragram_url,
+            instagram_url: rootData.instagram_url || rootData.instragram_url || '',
             whatsapp_url: rootData.whatsapp_url,
             site_name: rootData.site_name,
             meta_title: rootData.meta_title,
             meta_description: rootData.meta_description,
-            meta_keyword: rootData.meta_keyword,
+            meta_keyword: rootData.meta_keyword || rootData.meta_keywords || '',
             page_title: rootData.page_title,
           });
 
@@ -117,8 +118,20 @@ export class CompanySettingsEdit implements OnInit {
   }
 
   saveCompanySettings(): void {
+    console.log('Attempting to save Company Settings...');
     this.companySettingsForm.markAllAsTouched();
-    if (this.companySettingsForm.invalid) return;
+
+    if (this.companySettingsForm.invalid) {
+      console.warn('Form is invalid. Validation Errors:');
+      Object.keys(this.companySettingsForm.controls).forEach(key => {
+        const control = this.companySettingsForm.get(key);
+        if (control?.invalid) {
+          console.log(`- ${key}:`, control.errors);
+        }
+      });
+      alert('Please fill in all required fields.');
+      return;
+    }
 
     const formData = new FormData();
     formData.append('name', this.companySettingsForm.get('name')?.value || '');
@@ -127,7 +140,9 @@ export class CompanySettingsEdit implements OnInit {
     formData.append('phone_number', this.companySettingsForm.get('phone_number')?.value || '');
     formData.append('address', this.companySettingsForm.get('address')?.value || '');
     formData.append('facebook_url', this.companySettingsForm.get('facebook_url')?.value || '');
-    formData.append('instragram_url', this.companySettingsForm.get('instragram_url')?.value || '');
+    const instaUrl = this.companySettingsForm.get('instagram_url')?.value || '';
+    formData.append('instagram_url', instaUrl);
+    formData.append('instragram_url', instaUrl); // Misspelled version for backend compatibility
     formData.append('whatsapp_url', this.companySettingsForm.get('whatsapp_url')?.value || '');
     formData.append('site_name', this.companySettingsForm.get('site_name')?.value || '');
     formData.append('meta_title', this.companySettingsForm.get('meta_title')?.value || '');
@@ -142,24 +157,38 @@ export class CompanySettingsEdit implements OnInit {
       formData.append('favicon', this.faviconFile);
     }
 
+    console.log('Form data prepared. Mode:', this.isEditMode ? 'Update' : 'Create', 'ID:', this.companySettingsId);
+
     if (this.isEditMode && this.companySettingsId > 0) {
+      // Append ID to body just in case backend requires it
+      formData.append('id', this.companySettingsId.toString());
+
+      // Send meta_keywords (plural) as well for compatibility
+      formData.append('meta_keywords', this.companySettingsForm.get('meta_keyword')?.value || '');
+
       this.companySettingsService.updateCompanySettings(this.companySettingsId, formData).subscribe({
-        next: () => {
+        next: (resp) => {
+          console.log('Update Success:', resp);
           alert('Company Settings updated successfully!');
           this.loadCompanySettings();
         },
         error: (err: any) => {
-          console.error('Error updating Company Settings:', err);
+          console.error('Update Error Detail:', err);
+          const msg = err.error?.message || (err.error && typeof err.error === 'string' ? err.error : 'Server Error');
+          alert(`Failed to update settings. Error: ${msg}`);
         }
       });
     } else {
       this.companySettingsService.createCompanySettings(formData).subscribe({
-        next: () => {
+        next: (resp) => {
+          console.log('Create Success:', resp);
           alert('Company Settings created successfully!');
           this.loadCompanySettings();
         },
         error: (err: any) => {
-          console.error('Error creating Company Settings:', err);
+          console.error('Create Error Detail:', err);
+          const msg = err.error?.message || (err.error && typeof err.error === 'string' ? err.error : 'Server Error');
+          alert(`Failed to create settings. Error: ${msg}`);
         }
       });
     }

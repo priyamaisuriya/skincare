@@ -1,21 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { Categories } from '../../../../models/categories';
 import { CategoriesService } from '../../../../service/categories';
 
+declare const $: any;
+
 @Component({
   selector: 'app-list',
-  imports: [FormsModule, CommonModule],
+  standalone: true,
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './list.html',
   styleUrl: './list.css',
 })
 export class List implements OnInit {
-  categories: Categories[] = [];
+  private categoriesSubject = new BehaviorSubject<Categories[]>([]);
+  categories$: Observable<Categories[]> = this.categoriesSubject.asObservable();
 
-  constructor(private categoriesService: CategoriesService) { }
+  constructor(
+    private categoriesService: CategoriesService,
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
+
+
 
   ngOnInit(): void {
     this.loadCategories();
@@ -23,12 +34,33 @@ export class List implements OnInit {
   loadCategories() {
     this.categoriesService.getAllCategories().subscribe({
       next: (data: any) => {
-        this.categories = data.data || data;
-        console.log(this.categories);
+        const categoriesData = data.data || data;
+        this.categoriesSubject.next(categoriesData);
+        this.cdr.detectChanges();
+
+        if (isPlatformBrowser(this.platformId)) {
+          setTimeout(() => {
+            this.initDataTable();
+          }, 100);
+        }
       },
       error: (error) => {
         console.error('Error fetching categories:', error);
       }
+    });
+  }
+
+  initDataTable(): void {
+    if (!isPlatformBrowser(this.platformId) || typeof $ === 'undefined') {
+      return;
+    }
+
+    if ($.fn.DataTable.isDataTable('#categories-table')) {
+      $('#categories-table').DataTable().destroy();
+    }
+
+    $('#categories-table').DataTable({
+      columnDefs: [{ orderable: false, targets: [5, 6] }]
     });
   }
   deleteCategory(id: number) {

@@ -21,10 +21,10 @@ export const serverRoutes: ServerRoute[] = [
     path: 'admin/order/edit/:id',
     renderMode: RenderMode.Server
   },
-  {
-    path: 'admin/states/edit/:id',
-    renderMode: RenderMode.Server
-  },
+  // {
+  //   path: 'admin/states/edit/:id',
+  //   renderMode: RenderMode.Server
+  // },
   {
     path: 'admin/faq/edit/:id',
     renderMode: RenderMode.Server
