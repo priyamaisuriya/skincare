@@ -5,32 +5,31 @@
 
     <div class="section-body">
         <div class="card">
-            <div class="card-body">
+            <div class="card-body" *ngIf="contact()">
+                <div class="mb-3">
+                    <strong>Name:</strong> {{ contact().name }}
+                </div>
 
                 <div class="mb-3">
-                    <strong>Name:</strong>
-
-                    <div class="mb-3">
-                        <strong>Email:</strong>
-                    </div>
-
-                    <div class="mb-3">
-                        <strong>Phone:</strong>
-                    </div>
-
-                    <div class="mb-3">
-                        <strong>Subject:</strong>
-                    </div>
-
-                    <div class="mb-3">
-                        <strong>Message:</strong>
-                    </div>
-
-                    <a href="/admin/contacts" class="btn btn-secondary">
-                        Back
-                    </a>
-
+                    <strong>Email:</strong> {{ contact().email }}
                 </div>
+
+                <div class="mb-3">
+                    <strong>Phone:</strong> {{ contact().phone_number }}
+                </div>
+
+                <div class="mb-3">
+                    <strong>Subject:</strong> {{ contact().subject }}
+                </div>
+
+                <div class="mb-3">
+                    <strong>Message:</strong> {{ contact().message }}
+                </div>
+
+                <a routerLink="/admin/contacts" class="btn btn-secondary">
+                    Back
+                </a>
+
             </div>
         </div>
     </div>

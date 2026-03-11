@@ -66,8 +66,12 @@ export const routes: Routes = [
             { path: 'admin/faq/edit/:id', component: FaqEdit },
 
             { path: 'admin/contacts', component: ContactList },
-            { path: 'admin/contacts/create', component: ContactEdit },
-            { path: 'admin/contacts/edit/:id', component: ContactEdit },
+            // { path: 'admin/contacts/create', component: ContactEdit },
+            // { path: 'admin/contacts/edit/:id', component: ContactEdit },
+            {
+                path: 'admin/contacts/edit/:id',
+                component: ContactEdit
+            },
 
             { path: 'admin/products', component: ProductList },
             { path: 'admin/products/create', component: ProductEdit },

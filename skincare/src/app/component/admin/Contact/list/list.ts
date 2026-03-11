@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ContactService } from '../../../../service/contact';
 import { Contact } from '../../../../models/contact';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-list',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './list.html',
   styleUrl: './list.css',
 })
