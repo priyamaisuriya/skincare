@@ -14,8 +14,7 @@ import { List as CategoriesList } from './component/admin/Categories/list/list';
 import { CategoriesEdit } from './component/admin/Categories/edit/edit';
 import { List as OrderList } from './component/admin/Order/list/list';
 import { Edit as OrderEdit } from './component/admin/Order/edit/edit';
-import { List as StateList } from './component/admin/State/list/list';
-import { Edit as StateEdit } from './component/admin/State/edit/edit';
+
 import { List as FaqList } from './component/admin/FAQ/list/list';
 import { Edit as FaqEdit } from './component/admin/FAQ/edit/edit';
 import { List as ContactList } from './component/admin/Contact/list/list';
@@ -30,6 +29,7 @@ export const routes: Routes = [
         children: [
             { path: 'sidebar', component: Sidebar },
             { path: 'header', component: Header },
+            { path: '', redirectTo: 'admin/dashboard', pathMatch: 'full' },
 
             // { path: 'admin/slider', component: List },
             // { path: 'admin/slider/create', component: Edit },
@@ -57,9 +57,6 @@ export const routes: Routes = [
             { path: 'admin/order/create', component: OrderEdit },
             { path: 'admin/order/edit/:id', component: OrderEdit },
 
-            { path: 'admin/states', component: StateList },
-            { path: 'admin/states/create', component: StateEdit },
-            { path: 'admin/states/edit/:id', component: StateEdit },
 
             { path: 'admin/faq', component: FaqList },
             { path: 'admin/faq/create', component: FaqEdit },

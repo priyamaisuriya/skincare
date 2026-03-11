@@ -1,24 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { SliderService } from '../../../../service/slider';
 import { Slider } from '../../../../models/slider';
+import { RouterModule } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
 
-
-
-
-import { RouterLink } from '@angular/router';
+declare const $: any;
 
 @Component({
   selector: 'app-list',
   standalone: true,
-  imports: [RouterLink, FormsModule, CommonModule],
+  imports: [RouterModule, FormsModule, CommonModule],
   templateUrl: './list.html',
   styleUrl: './list.css',
 })
 export class List implements OnInit {
-  sliders: Slider[] = [];
-  constructor(private sliderService: SliderService) { }
+  private slidersSubject = new BehaviorSubject<Slider[]>([]);
+  sliders$: Observable<Slider[]> = this.slidersSubject.asObservable();
+
+  constructor(
+    private sliderService: SliderService,
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
   ngOnInit(): void {
     this.loadSliders();
@@ -27,12 +32,33 @@ export class List implements OnInit {
   loadSliders(): void {
     this.sliderService.getAllSliders().subscribe({
       next: (data: any) => {
-        this.sliders = data.data || data;
-        console.log('Sliders loaded:', this.sliders);
+        const slidersData = data.data || data;
+        this.slidersSubject.next(slidersData);
+        this.cdr.detectChanges();
+
+        if (isPlatformBrowser(this.platformId)) {
+          setTimeout(() => {
+            this.initDataTable();
+          }, 100);
+        }
       },
       error: (err) => {
         console.error('Error loading sliders:', err);
       }
+    });
+  }
+
+  initDataTable(): void {
+    if (!isPlatformBrowser(this.platformId) || typeof $ === 'undefined') {
+      return;
+    }
+
+    if ($.fn.DataTable.isDataTable('#sliders-table')) {
+      $('#sliders-table').DataTable().destroy();
+    }
+
+    $('#sliders-table').DataTable({
+      columnDefs: [{ orderable: false, targets: [2, 5, 6] }]
     });
   }
 

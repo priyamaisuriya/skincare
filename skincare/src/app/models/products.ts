@@ -1,3 +1,4 @@
+import { ProductImages } from "./product-images";
 export interface Products {
     id: number;
     name: string;
@@ -19,4 +20,7 @@ export interface Products {
     best_seller: string;
     how_to_use: string;
     shipping_return: string;
+    image_url?: string;
+    product_images: ProductImages[];
+    related_products?: Products[];
 }

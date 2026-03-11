@@ -2,10 +2,10 @@
     <div class="section-header">
         <h1>Contact Messages</h1>
         <div class="section-header-button">
-            <a href="/admin/contacts/create" class="btn btn-primary">Add New</a>
+            <!-- <a href="/admin/contacts/create" class="btn btn-primary">Add New</a> -->
         </div>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="">Dashboard</a></div>
+            <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
         </div>
     </div>
 
@@ -15,7 +15,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-striped v_center">
+                            <table class="table table-striped" id="contacts-table">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -29,8 +29,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @for(contact of contacts; track contact.id) {
-                                    <tr>
+                                    <tr *ngFor="let contact of contacts$ | async">
                                         <td>{{contact.id}}</td>
                                         <td>{{contact.name}}</td>
                                         <td>{{contact.email}}</td>
@@ -39,13 +38,12 @@
                                         <td>{{contact.message}}</td>
                                         <td>{{contact.created_at}}</td>
                                         <td>
-                                            <a href="/admin/contacts/edit/{{contact.id}}" class="btn btn-info mr-2">
+                                            <a [routerLink]="['/admin/contacts/edit', contact.id]"
+                                                class="btn btn-info mr-2">
                                                 View
                                             </a>
-
                                         </td>
                                     </tr>
-                                    }
                                 </tbody>
                             </table>
                         </div>

@@ -6,7 +6,7 @@ export interface CompanySettings {
     phone_number: string;
     address: string;
     facebook_url: string;
-    instragram_url: string;
+    instagram_url: string;
     whatsapp_url: string;
     site_name: string;
     logo?: string;

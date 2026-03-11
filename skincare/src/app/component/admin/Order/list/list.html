@@ -1,8 +1,11 @@
 <section class="section">
     <div class="section-header">
         <h1>Manage Orders</h1>
+        <div class="section-header-button">
+            <a routerLink="/admin/order/create" class="btn btn-primary">Add New </a>
+        </div>
         <div class="section-header-breadcrumb">
-            <div class="breadcrumb-item active"><a href="admin/order/create">Dashboard</a></div>
+            <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
             <div class="breadcrumb-item">Orders</div>
         </div>
     </div>
@@ -14,7 +17,7 @@
                     <div class="card-body">
 
                         <div class="table-responsive">
-                            <table class="table table-striped v_center">
+                            <table class="table table-striped" id="orders-table">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -27,20 +30,22 @@
                                     </tr>
                                 </thead>
 
-                                <tbody>
-                                    @for(order of orders; track order.id) {
-                                    <tr>
+                                <tbody *ngIf="orders$ | async as orders">
+                                    <tr *ngFor="let order of orders">
                                         <td>{{ order.id }}</td>
-                                        <td>{{ order.customer_id }}</td>
+                                        <td>{{ order.customer_name || order.customer_id }}</td>
                                         <td>{{ order.total_amount }}</td>
                                         <td>{{ order.status }}</td>
                                         <td>{{ order.order_date }}</td>
-                                        <td><button class="btn btn-primary" (click)="showOrder(order.id)">Show</button>
+                                        <td>
+                                            <a [routerLink]="['/admin/order/show', order.id]"
+                                                class="btn btn-primary">Show</a>
                                         </td>
-                                        <td><button class="btn btn-warning" (click)="editOrder(order.id)">Edit</button>
+                                        <td>
+                                            <a [routerLink]="['/admin/order/edit', order.id]"
+                                                class="btn btn-warning">Edit</a>
                                         </td>
                                     </tr>
-                                    }
                                 </tbody>
 
                             </table>
