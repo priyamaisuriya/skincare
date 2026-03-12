@@ -1,0 +1,43 @@
+.badge {
+    padding: 6px 15px;
+    font-weight: 500;
+    border-radius: 5px;
+    font-size: 13px;
+    text-transform: capitalize;
+}
+
+.badge-warning { background-color: #ffc107; color: #fff; }
+.badge-success { background-color: #28a745; color: #fff; }
+.badge-danger { background-color: #dc3545; color: #fff; }
+.badge-info { background-color: #17a2b8; color: #fff; }
+
+.btn-show-action {
+    background-color: #007bff;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.btn-edit-action {
+    background-color: #6f42c1;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.table thead th {
+    color: #495057;
+    font-weight: 600;
+    border-bottom-width: 1px;
+    background-color: #f8f9fa;
+}
+
+.table tbody td {
+    vertical-align: middle;
+}

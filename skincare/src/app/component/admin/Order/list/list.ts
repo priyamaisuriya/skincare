@@ -1,13 +1,9 @@
 import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
-
 import { FormsModule } from '@angular/forms';
-
-import { BehaviorSubject, Observable } from 'rxjs';
 import { OrderService } from '../../../../service/order';
 import { Order } from '../../../../models/order';
-import { OrderItems } from '../../../../models/order-items';
 
 declare const $: any;
 
@@ -19,34 +15,42 @@ declare const $: any;
   styleUrl: './list.css',
 })
 export class List implements OnInit {
-  private ordersSubject = new BehaviorSubject<Order[]>([]);
-  orders$: Observable<Order[]> = this.ordersSubject.asObservable();
+  allOrders: Order[] = [];
+
   constructor(
     private orderService: OrderService,
     private router: Router,
     private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
+
   ngOnInit(): void {
     this.loadOrders();
   }
 
-
-
   loadOrders(): void {
     this.orderService.getAllOrders().subscribe({
-      next: (data) => {
-        const ordersData = data.data || data;
-        this.ordersSubject.next(ordersData);
+      next: (response: any) => {
+        // Handle direct arrays, Laravel data wrapper, and named 'orders' property
+        const ordersData = response.data || response.orders || response;
+        this.allOrders = Array.isArray(ordersData) ? ordersData : [];
+
+        // Manual change detection before initializing DataTables
         this.cdr.detectChanges();
+
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {
             this.initDataTable();
-          }, 100);
+          }, 500); // 500ms timeout for stability
         }
       },
       error: (err) => {
         console.error('Error loading orders:', err);
+        this.allOrders = [];
+        this.cdr.detectChanges();
+        if (isPlatformBrowser(this.platformId)) {
+          setTimeout(() => this.initDataTable(), 500);
+        }
       }
     });
   }
@@ -57,13 +61,16 @@ export class List implements OnInit {
     }
 
     if ($.fn.DataTable.isDataTable('#orders-table')) {
-      $('#orders-table').DataTable().destroy();
+      const table = $('#orders-table').DataTable();
+      table.destroy();
     }
 
     $('#orders-table').DataTable({
-      columnDefs: [{ orderable: false, targets: [5, 6] }]
+      columnDefs: [{ orderable: false, targets: [5, 6] }],
+      retrieve: true
     });
   }
+
   deleteOrder(id: number): void {
     if (confirm('Are you sure you want to delete this order?')) {
       this.orderService.deleteOrder(id).subscribe({
@@ -76,21 +83,12 @@ export class List implements OnInit {
       });
     }
   }
+
   deleteOrderItems(id: number): void {
-    if (confirm('Are you sure you want to delete this order?')) {
-      this.orderService.deleteOrder(id).subscribe({
-        next: () => {
-          this.loadOrders();
-        },
-        error: (err) => {
-          console.error('Error deleting order:', err);
-        }
-      });
-    }
+    console.log('Delete order items for order:', id);
   }
 
   showOrder(id: number): void {
-    // Navigate to show order page
     console.log('Show order:', id);
   }
 

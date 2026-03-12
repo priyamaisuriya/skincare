@@ -14,6 +14,8 @@ import { List as CategoriesList } from './component/admin/Categories/list/list';
 import { CategoriesEdit } from './component/admin/Categories/edit/edit';
 import { List as OrderList } from './component/admin/Order/list/list';
 import { Edit as OrderEdit } from './component/admin/Order/edit/edit';
+import { Show as OrderShow } from './component/admin/Order/show/show';
+
 
 import { List as FaqList } from './component/admin/FAQ/list/list';
 import { Edit as FaqEdit } from './component/admin/FAQ/edit/edit';
@@ -55,6 +57,7 @@ export const routes: Routes = [
 
             { path: 'admin/orders', component: OrderList },
             { path: 'admin/order/create', component: OrderEdit },
+            { path: 'admin/order/show/:id', component: OrderShow },
             { path: 'admin/order/edit/:id', component: OrderEdit },
 
 

@@ -25,5 +25,7 @@ export interface Order {
     tracking_id: string;
     est_delivery_date: string;
     delivery_date: string;
-    items: OrderItems[];
+    items?: OrderItems[];
+    order_items?: OrderItems[];
+    histories?: any[];
 }

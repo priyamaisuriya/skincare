@@ -1,0 +1,20 @@
+.badge-purple {
+    background-color: #5a5278;
+    color: white;
+    border-radius: 20px;
+}
+
+.detail-table th {
+    background-color: #f9f9f9 !important;
+    color: #34395e;
+    font-weight: 600;
+}
+
+.items-table thead th, .history-table thead th {
+    background-color: #f9f9f9;
+    color: #34395e;
+    font-weight: 600;
+}
+
+.text-primary { color: #34395e !important; }
+.bg-light-f9 { background-color: #f9f9f9 !important; }
