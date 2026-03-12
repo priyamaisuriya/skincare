@@ -6,11 +6,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { ContactService } from '../../../../service/contact';
 import { Contact } from '../../../../models/contact';
 
+
 declare const $: any;
 
 @Component({
   selector: 'app-list',
-  standalone: true,
   imports: [FormsModule, CommonModule, RouterModule],
   templateUrl: './list.html',
   styleUrl: './list.css',
