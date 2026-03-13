@@ -52,8 +52,10 @@ export class UserEdit implements OnInit {
           const rootData = response.data || response;
           console.log('Loaded User Data:', rootData);
 
+
           this.userForm.patchValue({
             name: rootData.name,
+            password: '',
             email: rootData.email,
             status: rootData.status == 1 || rootData.status == true,
             phone_number: rootData.phone_number,
@@ -61,7 +63,7 @@ export class UserEdit implements OnInit {
             first_name: rootData.first_name,
             last_name: rootData.last_name,
             dob: rootData.dob,
-            type: rootData.type,
+            type: rootData.type ? rootData.type.toLowerCase() : '',
             city: rootData.city,
             state: rootData.state,
             postal_code: rootData.postal_code,
@@ -119,7 +121,7 @@ export class UserEdit implements OnInit {
     }
 
     // Using 'type' as the role/type field since 'role' was missing from HTML
-    formData.append('role', this.userForm.get('type')?.value || 'customer');
+
     formData.append('status', this.userForm.get('status')?.value ? '1' : '0');
     formData.append('phone_number', this.userForm.get('phone_number')?.value || '');
     formData.append('address', this.userForm.get('address')?.value || '');

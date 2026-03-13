@@ -6,16 +6,25 @@
         </div>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
+            <div class="breadcrumb-item">Manage Couriers</div>
         </div>
     </div>
 
     <div class="section-body">
-
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="table-responsive">
+                        <!-- Loading State -->
+                        <div *ngIf="loading" class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Loading couriers...</p>
+                        </div>
+
+                        <!-- Table View -->
+                        <div class="table-responsive" [hidden]="loading">
                             <table class="table table-striped" id="couriers-table">
                                 <thead>
                                     <tr>
@@ -23,35 +32,39 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-
-
+                                        <th class="text-center">Edit</th>
+                                        <th class="text-center">Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let courier of couriers$ | async">
-                                        <td>{{courier.id}}</td>
-                                        <td>{{courier.name}}</td>
-                                        <td>{{courier.email}}</td>
-                                        <td>{{courier.phone}}</td>
-                                        <td>
+                                    <tr *ngFor="let courier of allCouriers">
+                                        <td>{{ courier.id }}</td>
+                                        <td>{{ courier.name }}</td>
+                                        <td>{{ courier.email || 'N/A' }}</td>
+                                        <td>{{ courier.phone || 'N/A' }}</td>
+                                        <td class="text-center">
                                             <a [routerLink]="['/admin/courier/edit', courier.id]"
-                                                class="btn btn-primary">Edit</a>
+                                                class="btn btn-primary btn-sm">
+                                                Edit
+                                            </a>
                                         </td>
-                                        <td>
-                                            <button (click)="deleteCouriers(courier.id)" class="btn btn-danger">
+                                        <td class="text-center">
+                                            <button (click)="deleteCouriers(courier.id)" class="btn btn-danger btn-sm">
                                                 Delete
                                             </button>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+
+                            <!-- Empty State -->
+                            <div *ngIf="!loading && allCouriers.length === 0" class="text-center py-4 text-muted">
+                                No couriers found.
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </section>

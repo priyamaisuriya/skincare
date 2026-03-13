@@ -2,12 +2,10 @@ import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angu
 import { FormsModule } from '@angular/forms';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { CouriersService } from '../../../../service/couriers';
 import { Couriers } from '../../../../models/couriers';
 
 declare const $: any;
-
 
 @Component({
   selector: 'app-list',
@@ -17,8 +15,8 @@ declare const $: any;
   styleUrl: './list.css',
 })
 export class List implements OnInit {
-  private couriersSubject = new BehaviorSubject<Couriers[]>([]);
-  couriers$: Observable<Couriers[]> = this.couriersSubject.asObservable();
+  allCouriers: Couriers[] = [];
+  loading: boolean = true;
 
   constructor(
     private couriersService: CouriersService,
@@ -29,11 +27,15 @@ export class List implements OnInit {
   ngOnInit(): void {
     this.loadCouriers();
   }
+
   loadCouriers(): void {
+    this.loading = true;
     this.couriersService.getAllCouriers().subscribe({
-      next: (data: any) => {
-        const couriersData = data.data || data;
-        this.couriersSubject.next(couriersData);
+      next: (response: any) => {
+        console.log('Couriers List - API Response:', response);
+        const data = response.data || response;
+        this.allCouriers = Array.isArray(data) ? data : [];
+        this.loading = false;
         this.cdr.detectChanges();
 
         if (isPlatformBrowser(this.platformId)) {
@@ -43,13 +45,16 @@ export class List implements OnInit {
         }
       },
       error: (err) => {
-        console.error('Error loading Couriers:', err);
+        console.error('Couriers List - Error loading data:', err);
+        this.allCouriers = [];
+        this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
   initDataTable(): void {
-    if (!isPlatformBrowser(this.platformId) || typeof $ === 'undefined') {
+    if (!isPlatformBrowser(this.platformId) || typeof $ === 'undefined' || !$.fn.DataTable) {
       return;
     }
 
@@ -58,18 +63,22 @@ export class List implements OnInit {
     }
 
     $('#couriers-table').DataTable({
-      columnDefs: [{ orderable: false, targets: [4, 5] }]
+      columnDefs: [{ orderable: false, targets: [4, 5] }],
+      language: {
+        emptyTable: "No couriers found."
+      }
     });
   }
 
   deleteCouriers(id: number): void {
-    if (confirm('Are you sure you want to delete this Courier?')) {
+    if (confirm('Are you sure you want to delete this courier?')) {
       this.couriersService.deleteCourier(id).subscribe({
         next: () => {
           this.loadCouriers();
         },
         error: (err) => {
-          console.error('Error deleting Courier:', err);
+          console.error('Couriers List - Error deleting record:', err);
+          alert('Failed to delete courier.');
         }
       });
     }

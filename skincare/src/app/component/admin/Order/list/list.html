@@ -16,14 +16,7 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <div *ngIf="loading" class="text-center py-5">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="sr-only">Loading...</span>
-                            </div>
-                            <p class="mt-2 text-muted">Loading orders...</p>
-                        </div>
-
-                        <div class="table-responsive" [hidden]="loading">
+                        <div class="table-responsive">
                             <table class="table table-striped" id="orders-table">
                                 <thead>
                                     <tr>
@@ -64,6 +57,11 @@
                                                 class="btn btn-edit-action">
                                                 <i class="fas fa-pencil-alt text-white"></i>
                                             </a>
+                                        </td>
+                                    </tr>
+                                    <tr *ngIf="allOrders.length === 0">
+                                        <td colspan="7" class="text-center py-4 text-muted">
+                                            No orders found matching your criteria.
                                         </td>
                                     </tr>
                                 </tbody>
