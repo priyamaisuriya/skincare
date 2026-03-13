@@ -37,7 +37,10 @@ export class List implements OnInit {
         if (isPlatformBrowser(this.platformId)) {
           // delay slightly so DOM has updated before invoking jQuery
           setTimeout(() => {
-            this.initDataTable();
+            if (!$.fn.DataTable.isDataTable('#faq-table')) {
+              this.initDataTable();
+            }
+            
           }, 0);
         }
       },

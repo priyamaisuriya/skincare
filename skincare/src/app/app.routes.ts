@@ -23,8 +23,9 @@ import { List as ContactList } from './component/admin/Contact/list/list';
 import { Edit as ContactEdit } from './component/admin/Contact/edit/edit';
 import { List as ProductList } from './component/admin/Product/list/list';
 import { Edit as ProductEdit } from './component/admin/Product/edit/edit';
-
+import { Login } from './component/Auth/login/login';
 export const routes: Routes = [
+    { path: 'login', component: Login },
     {
         path: '',
         component: Layout,
@@ -37,6 +38,7 @@ export const routes: Routes = [
             // { path: 'admin/slider/create', component: Edit },
             // { path: 'admin/slider/edit/:id', component: Edit },
 
+            
             { path: 'admin/courier', component: CourierList },
             { path: 'admin/courier/create', component: CourierEdit },
             { path: 'admin/courier/edit/:id', component: CourierEdit },

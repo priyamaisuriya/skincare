@@ -41,7 +41,9 @@ export class List implements OnInit {
 
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {
+            if (!$.fn.DataTable.isDataTable('#products-table')) {
             this.initDataTable();
+            }
           }, 300);
         }
       },

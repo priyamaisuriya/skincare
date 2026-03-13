@@ -40,7 +40,9 @@ export class List implements OnInit {
 
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {
-            this.initDataTable();
+            if (!$.fn.DataTable.isDataTable('#orders-table')) {
+              this.initDataTable();
+            }
           }, 500); // 500ms timeout for stability
         }
       },

@@ -35,12 +35,14 @@ export class List implements OnInit {
     this.categoriesService.getAllCategories().subscribe({
       next: (data: any) => {
         const categoriesData = data.data || data;
-        this.categoriesSubject.next(categoriesData);
+        this.categoriesSubject.next([...categoriesData]);
         this.cdr.detectChanges();
 
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {
-            this.initDataTable();
+            if (!$.fn.DataTable.isDataTable('#categories-table')) {
+              this.initDataTable();
+            }
           }, 100);
         }
       },

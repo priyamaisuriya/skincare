@@ -40,7 +40,10 @@ export class List implements OnInit {
 
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {
-            this.initDataTable();
+            if (!$.fn.DataTable.isDataTable('#couriers-table')) {
+              this.initDataTable();
+            }
+            
           }, 100);
         }
       },
