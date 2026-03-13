@@ -43,7 +43,7 @@ export class Edit implements OnInit {
       short_description: ['', Validators.required],
       long_description: ['', Validators.required],
       mrp: ['', Validators.required],
-      discount: ['', Validators.required],
+      discount: ['', [Validators.required, Validators.min(0), Validators.max(100)]],
       amount: ['', Validators.required],
       volume_weight: ['', Validators.required],
       is_new: [false],

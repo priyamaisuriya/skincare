@@ -119,11 +119,21 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <label class="col-form-label ">discount</label>
-                                        <input type="number" formControlName="discount" class="form-control"
+                                        <input type="number" formControlName="discount" [min]="0" [max]="100" class="form-control"
                                             placeholder="please enter products discount" required>
+
+                                        <!-- show specific error messages for the min/max validators -->
                                         <div class="text-danger mt-1"
-                                            *ngIf="productForm.get('discount')?.invalid && productForm.get('discount')?.touched">
-                                            Please fill in your products discount
+                                            *ngIf="productForm.get('discount')?.errors?.['required'] && productForm.get('discount')?.touched">
+                                            Discount is required
+                                        </div>
+                                        <div class="text-danger mt-1"
+                                            *ngIf="productForm.get('discount')?.errors?.['min'] && productForm.get('discount')?.touched">
+                                            Discount must be at least 0%
+                                        </div>
+                                        <div class="text-danger mt-1"
+                                            *ngIf="productForm.get('discount')?.errors?.['max'] && productForm.get('discount')?.touched">
+                                            Discount cannot exceed 100%
                                         </div>
                                     </div>
                                 </div>
