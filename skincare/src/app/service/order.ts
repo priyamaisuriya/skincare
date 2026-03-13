@@ -6,7 +6,7 @@ import { Order } from '../models/order';
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrl = 'http://127.0.0.1:8000/api/admin/order';
+  private apiUrl = 'http://127.0.0.1:8000/api/admin/orders';
   constructor(private http: HttpClient) { }
   getAllOrders(): Observable<any> {
     return this.http.get<any>(this.apiUrl);

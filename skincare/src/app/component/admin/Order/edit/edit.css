@@ -1,0 +1,74 @@
+.text-primary { color: #34395e !important; }
+.text-muted { color: #98a6ad !important; }
+
+.section-header h1 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.card {
+    border-radius: 8px;
+}
+
+.card-header h4 {
+    font-size: 18px;
+    margin-bottom: 0;
+}
+
+.detail-table th {
+    background-color: #fbfcff;
+    color: #495057;
+    font-weight: 600;
+    padding: 12px 15px !important;
+}
+
+.detail-table td {
+    padding: 12px 15px !important;
+    color: #6c757d;
+}
+
+.bg-light-gray {
+    background-color: #f9f9f9 !important;
+}
+
+.badge-primary {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.badge-pill {
+    border-radius: 50rem;
+}
+
+.btn-purple {
+    background-color: #5a5278;
+    color: white;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.btn-purple:hover {
+    background-color: #4b4465;
+    color: white;
+}
+
+.items-table thead th, .history-table thead th {
+    background-color: #f9f9f9;
+    color: #495057;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.items-table td, .history-table td {
+    border-top: 1px solid #f2f2f2;
+    font-size: 14px;
+}
+
+.bg-light-f9 {
+    background-color: #f9f9f9 !important;
+}
+
+.custom-select {
+    height: 45px;
+    border: 1px solid #e4e6fc;
+}

@@ -2,7 +2,7 @@
     <div class="section-header">
         <h1>Manage Orders</h1>
         <div class="section-header-button">
-            <a routerLink="/admin/order/create" class="btn btn-primary">Add New </a>
+            <!-- <a routerLink="/admin/order/create" class="btn btn-primary">Add New </a> -->
         </div>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
@@ -16,7 +16,14 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <div class="table-responsive">
+                        <div *ngIf="loading" class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <p class="mt-2 text-muted">Loading orders...</p>
+                        </div>
+
+                        <div class="table-responsive" [hidden]="loading">
                             <table class="table table-striped" id="orders-table">
                                 <thead>
                                     <tr>
@@ -25,25 +32,38 @@
                                         <th>Total Amount</th>
                                         <th>Status</th>
                                         <th>Date</th>
-                                        <th>Show</th>
-                                        <th>Edit</th>
+                                        <th class="text-center">Show</th>
+                                        <th class="text-center">Edit</th>
                                     </tr>
                                 </thead>
 
-                                <tbody *ngIf="orders$ | async as orders">
-                                    <tr *ngFor="let order of orders">
+                                <tbody>
+                                    <tr *ngFor="let order of allOrders">
                                         <td>{{ order.id }}</td>
-                                        <td>{{ order.customer_name || order.customer_id }}</td>
-                                        <td>{{ order.total_amount }}</td>
-                                        <td>{{ order.status }}</td>
-                                        <td>{{ order.order_date }}</td>
+                                        <td>{{ order.customer_name }}</td>
+                                        <td>{{ order.total_amount | currency:'INR':'symbol' }}</td>
                                         <td>
-                                            <a [routerLink]="['/admin/order/show', order.id]"
-                                                class="btn btn-primary">Show</a>
+                                            <span class="badge" [ngClass]="{
+                                                'badge-warning': order.status === 'pending' || order.status === '0' || order.status === 'Pending',
+                                                'badge-success': order.status === 'completed' || order.status === '1' || order.status === 'Delivered',
+                                                'badge-danger': order.status === 'cancelled' || order.status === 'Cancelled',
+                                                'badge-info': order.status === 'processing' || order.status === 'Processing' || order.status === 'Shipped'
+                                            }">
+                                                {{ order.status }}
+                                            </span>
                                         </td>
-                                        <td>
+                                        <td>{{ order.order_date | date:'dd-MM-yyyy' }}</td>
+                                        <td class="text-center">
+                                            <a [routerLink]="['/admin/order/show', order.id]"
+                                                class="btn btn-show-action">
+                                                <i class="fas fa-eye text-white"></i>
+                                            </a>
+                                        </td>
+                                        <td class="text-center">
                                             <a [routerLink]="['/admin/order/edit', order.id]"
-                                                class="btn btn-warning">Edit</a>
+                                                class="btn btn-edit-action">
+                                                <i class="fas fa-pencil-alt text-white"></i>
+                                            </a>
                                         </td>
                                     </tr>
                                 </tbody>

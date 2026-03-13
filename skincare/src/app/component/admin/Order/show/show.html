@@ -1,0 +1,163 @@
+<section class="section">
+    <div class="section-header d-flex align-items-center">
+        <a routerLink="/admin/orders" class="btn btn-icon mr-3">
+            <i class="fas fa-arrow-left text-primary"></i>
+        </a>
+        <h1 class="text-primary">Order Details #{{ order?.id || '...' }}</h1>
+    </div>
+
+    <div class="section-body">
+        <!-- 1. LOADING STATE -->
+        <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Fetching order information...</p>
+        </div>
+
+        <!-- 2. ERROR STATE -->
+        <div *ngIf="error" class="alert alert-danger mx-4 shadow-sm">
+            <i class="fas fa-exclamation-circle mr-2"></i> {{ error }}
+        </div>
+
+        <!-- 3. DATA DISPLAY -->
+        <div *ngIf="!loading && order">
+            <!-- Top Row: Details & General Info -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-white border-bottom-0 py-3 px-4">
+                            <h4 class="text-primary font-weight-bold m-0">Basic Information</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-bordered detail-table m-0">
+                                <tbody>
+                                    <tr>
+                                        <th width="30%" class="bg-light-gray font-weight-bold px-4">Customer Name</th>
+                                        <td class="px-4">{{ order.customer_name }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light-gray font-weight-bold px-4">Email Address</th>
+                                        <td class="px-4">{{ order.customer_email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light-gray font-weight-bold px-4">Phone Number</th>
+                                        <td class="px-4">{{ order.customer_phone || 'N/A' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light-gray font-weight-bold px-4">Current Status</th>
+                                        <td class="px-4">
+                                            <span class="badge badge-purple px-3 py-2 text-capitalize">
+                                                {{ order.status }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light-gray font-weight-bold px-4">Total Amount Paid</th>
+                                        <td class="px-4 font-weight-bold text-success">
+                                            ₹{{ (order.total_amount || 0) | number:'1.2-2' }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="bg-light-gray font-weight-bold px-4">Shipping Location</th>
+                                        <td class="px-4">
+                                            {{ order.customer_address }}
+                                            <span *ngIf="order.customer_city">, {{ order.customer_city }}</span>
+                                            <span *ngIf="order.customer_state">, {{ order.customer_state }}</span>
+                                            <span *ngIf="order.customer_postal_code">, {{ order.customer_postal_code
+                                                }}</span>
+                                            <span *ngIf="order.customer_country">, {{ order.customer_country }}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Row: Items & Logs -->
+            <div class="row mt-4">
+                <!-- Order Items Table -->
+                <div class="col-lg-7">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-white border-bottom-0 py-3 px-4">
+                            <h4 class="text-primary font-weight-bold m-0">Order Items</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table items-table m-0">
+                                    <thead>
+                                        <tr class="bg-light-f9">
+                                            <th class="px-4 py-3 border-0">Product</th>
+                                            <th class="text-center py-3 border-0">Quantity</th>
+                                            <th class="text-center py-3 border-0">Price</th>
+                                            <th class="text-center py-3 border-0">Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of (order.order_items || order.orderItems)">
+                                            <td class="px-4 py-3">{{ item.product_name || 'Item #' + item.product_id }}
+                                            </td>
+                                            <td class="text-center py-3">{{ item.quantity }}</td>
+                                            <td class="text-center py-3">₹{{ (item.price || 0) | number:'1.2-2' }}</td>
+                                            <td class="text-center py-3">₹{{ (item.amount || 0) | number:'1.2-2' }}</td>
+                                        </tr>
+                                        <tr *ngIf="!(order.order_items || order.orderItems)?.length">
+                                            <td colspan="4" class="text-center py-5 text-muted italic">
+                                                No items found in this order.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order History Table -->
+                <div class="col-lg-5">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-white border-bottom-0 py-3 px-4">
+                            <h4 class="text-primary font-weight-bold m-0">Order History</h4>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table history-table m-0">
+                                    <thead>
+                                        <tr class="bg-light-f9">
+                                            <th class="px-4 py-3 border-0">Log</th>
+                                            <th class="px-4 py-3 border-0" width="160">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let history of order.histories">
+                                            <td class="px-4 py-3 text-muted small">{{ history.log }}</td>
+                                            <td class="px-4 py-3 text-muted small">
+                                                {{ history.created_at | date:'dd MMM yyyy, hh:mm a' }}
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="!order.histories?.length">
+                                            <td colspan="2" class="px-4 py-5 text-muted small text-center italic">
+                                                No history records available.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. EMPTY DATA FALLBACK -->
+        <div *ngIf="!loading && !order && !error" class="text-center py-5">
+            <div class="mb-3">
+                <i class="fas fa-search fa-3x text-muted"></i>
+            </div>
+            <h5 class="text-muted">Order data is currently unavailable.</h5>
+            <p class="text-muted">Please try refreshing the page or contact support if the issue persists.</p>
+        </div>
+    </div>
+</section>
