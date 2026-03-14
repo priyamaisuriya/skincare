@@ -25,7 +25,9 @@ export class List implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadCouriers();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadCouriers();
+    }
   }
 
   loadCouriers(): void {
@@ -43,7 +45,7 @@ export class List implements OnInit {
             if (!$.fn.DataTable.isDataTable('#couriers-table')) {
               this.initDataTable();
             }
-            
+
           }, 100);
         }
       },

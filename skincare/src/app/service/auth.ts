@@ -18,8 +18,9 @@ export class AuthService {
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post<any>(this.apiUrl, credentials).pipe(
       tap(response => {
-        if (response.token) {
-          this.setToken(response.token);
+        const token = response.token || (response.data && response.data.token);
+        if (token) {
+          this.setToken(token);
         }
       })
     );

@@ -26,7 +26,9 @@ export class List implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadContacts();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadContacts();
+    }
   }
 
   loadContacts(): void {

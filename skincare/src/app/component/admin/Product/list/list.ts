@@ -26,7 +26,9 @@ export class List implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadProducts();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadProducts();
+    }
   }
 
   loadProducts(): void {

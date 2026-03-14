@@ -9,7 +9,6 @@ import { SliderService } from '../../../../service/slider';
 
 @Component({
   selector: 'app-edit',
-  standalone: true,
   imports: [RouterLink, ReactiveFormsModule, CommonModule],
   templateUrl: './edit.html',
   styleUrl: './edit.css',
@@ -81,10 +80,7 @@ export class Edit implements OnInit {
 
   saveSlider(): void {
     this.sliderForm.markAllAsTouched();
-    if (this.sliderForm.invalid) {
-      alert('Please fill in all required fields before saving.');
-      return;
-    }
+    if (this.sliderForm.invalid) return;
 
     const formData = new FormData();
     formData.append('name', this.sliderForm.get('name')?.value);
@@ -103,9 +99,7 @@ export class Edit implements OnInit {
           this.router.navigate(['/admin/slider']);
         },
         error: (err) => {
-          const msg = err?.error?.message || JSON.stringify(err?.error?.errors) || 'An unexpected error occurred.';
           console.error('Error updating Slider:', err);
-          alert('Failed to update slider: ' + msg);
         }
       });
     } else {
@@ -114,9 +108,7 @@ export class Edit implements OnInit {
           this.router.navigate(['/admin/slider']);
         },
         error: (err) => {
-          const msg = err?.error?.message || JSON.stringify(err?.error?.errors) || 'An unexpected error occurred.';
           console.error('Error creating Slider:', err);
-          alert('Failed to create slider: ' + msg);
         }
       });
     }
