@@ -79,8 +79,12 @@ export class Edit implements OnInit {
   }
 
   saveSlider(): void {
+    console.log('Saving Slider...');
     this.sliderForm.markAllAsTouched();
-    if (this.sliderForm.invalid) return;
+    if (this.sliderForm.invalid) {
+      console.warn('Form is invalid. Details: ', this.sliderForm.errors);
+      return;
+    }
 
     const formData = new FormData();
     formData.append('name', this.sliderForm.get('name')?.value);
@@ -96,6 +100,7 @@ export class Edit implements OnInit {
     if (this.isEditMode) {
       this.sliderService.updateSlider(this.sliderId, formData).subscribe({
         next: () => {
+          alert('Slider updated successfully!');
           this.router.navigate(['/admin/slider']);
         },
         error: (err) => {
@@ -105,6 +110,7 @@ export class Edit implements OnInit {
     } else {
       this.sliderService.createSlider(formData).subscribe({
         next: () => {
+          alert('Slider created successfully!');
           this.router.navigate(['/admin/slider']);
         },
         error: (err) => {
