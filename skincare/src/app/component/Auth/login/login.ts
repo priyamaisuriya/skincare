@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterLink, ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../service/auth';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink, ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -32,7 +32,7 @@ export class Login {
     const payload = this.loginForm.value;
     this.authService.login(payload).subscribe({
       next: (response) => {
-        console.log('Login successful:', response);
+        console.log('Login component: Success response:', response);
         this.router.navigate(['/']); // Navigate to home or dashboard
       },
       error: (err) => {
