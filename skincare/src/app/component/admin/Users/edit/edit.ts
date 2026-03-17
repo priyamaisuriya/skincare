@@ -27,7 +27,7 @@ export class UserEdit implements OnInit {
     this.userForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: [''],
+      password: ['', [Validators.minLength(8)]],
       status: [true],
       phone_number: ['', Validators.required],
       address: ['', Validators.required],
@@ -78,7 +78,7 @@ export class UserEdit implements OnInit {
         }
       });
     } else {
-      this.userForm.get('password')?.setValidators([Validators.required]);
+      this.userForm.get('password')?.setValidators([Validators.required, Validators.minLength(8)]);
       this.userForm.get('password')?.updateValueAndValidity();
     }
   }
