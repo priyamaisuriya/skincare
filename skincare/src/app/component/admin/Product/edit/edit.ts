@@ -266,4 +266,14 @@ export class Edit implements OnInit {
       });
     }
   }
+
+  calculateAmount(): void {
+    const mrp = this.productForm.get('mrp')?.value;
+    const discount = this.productForm.get('discount')?.value;
+
+    if (mrp && discount !== null && discount !== undefined) {
+      const calculatedAmount = mrp - (mrp * discount / 100);
+      this.productForm.patchValue({ amount: calculatedAmount });
+    }
+  }
 }

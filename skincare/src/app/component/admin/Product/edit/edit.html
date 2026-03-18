@@ -108,7 +108,8 @@
                                     <div class="form-group mb-4">
                                         <label class="col-form-label">mrp</label>
                                         <input type="number" formControlName="mrp" class="form-control"
-                                            placeholder="please enter products mrp" required>
+                                            (input)="calculateAmount()" placeholder="please enter products mrp"
+                                            required>
                                         <div class="text-danger mt-1"
                                             *ngIf="productForm.get('mrp')?.invalid && productForm.get('mrp')?.touched">
                                             Please fill in your products mrp
@@ -119,8 +120,9 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <label class="col-form-label ">discount</label>
-                                        <input type="number" formControlName="discount" [min]="0" [max]="100" class="form-control"
-                                            placeholder="please enter products discount" required>
+                                        <input type="number" formControlName="discount" [min]="0" [max]="100"
+                                            class="form-control" placeholder="please enter products discount" required
+                                            (input)="calculateAmount()">
 
                                         <!-- show specific error messages for the min/max validators -->
                                         <div class="text-danger mt-1"
@@ -144,7 +146,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <label class="col-form-label">Amount</label>
-                                        <input type="number" formControlName="amount"
+                                        <input type="number" formControlName="amount" readonly
                                             class="form-control input-like-textarea"
                                             placeholder="Please enter products amount" required>
                                         <div class="text-danger mt-1"
