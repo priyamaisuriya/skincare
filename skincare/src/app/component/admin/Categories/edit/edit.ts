@@ -18,6 +18,7 @@ export class CategoriesEdit implements OnInit {
   categoryId: number = 0;
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
+  parentCategories: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -41,6 +42,7 @@ export class CategoriesEdit implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadParentCategories();
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       this.isEditMode = true;
@@ -74,6 +76,21 @@ export class CategoriesEdit implements OnInit {
         }
       });
     }
+  }
+
+  loadParentCategories(): void {
+    this.categoriesService.getAllCategories().subscribe({
+      next: (response: any) => {
+        const data = response.data || response;
+        // Don't list the current category as its own parent
+        this.parentCategories = this.isEditMode
+          ? data.filter((cat: any) => cat.id !== this.categoryId)
+          : data;
+      },
+      error: (err: any) => {
+        console.error('Error loading parent categories:', err);
+      }
+    });
   }
 
   onFileSelected(event: any): void {

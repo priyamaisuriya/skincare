@@ -1,0 +1,230 @@
+<section class="section">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="card card-statistic-2">
+                <div class="card-stats">
+                    <div class="card-stats-title">Order Statistics -
+                        <div class="dropdown d-inline">
+                            <a class="font-weight-600 dropdown-toggle" data-toggle="dropdown" href="#"
+                                id="orders-month">{{ currentMonth }}</a>
+                            <ul class="dropdown-menu dropdown-menu-sm">
+                                <li class="dropdown-title">Select Month</li>
+                                <li><a href="#" class="dropdown-item">January</a></li>
+                                <li><a href="#" class="dropdown-item">February</a></li>
+                                <li><a href="#" class="dropdown-item">March</a></li>
+                                <li><a href="#" class="dropdown-item">April</a></li>
+                                <li><a href="#" class="dropdown-item">May</a></li>
+                                <li><a href="#" class="dropdown-item">June</a></li>
+                                <li><a href="#" class="dropdown-item">July</a></li>
+                                <li><a href="#" class="dropdown-item">August</a></li>
+                                <li><a href="#" class="dropdown-item">September</a></li>
+                                <li><a href="#" class="dropdown-item">October</a></li>
+                                <li><a href="#" class="dropdown-item">November</a></li>
+                                <li><a href="#" class="dropdown-item">December</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-stats-items">
+                        <div class="card-stats-item">
+                            <div class="card-stats-item-count">{{ dashboardData()?.summary.pending_orders_count }}
+                            </div>
+                            <div class="card-stats-item-label">Pending</div>
+                        </div>
+                        <div class="card-stats-item">
+                            <div class="card-stats-item-count">{{ dashboardData()?.summary.shipped_orders_count }}
+                            </div>
+                            <div class="card-stats-item-label">Shipping</div>
+                        </div>
+                        <div class="card-stats-item">
+                            <div class="card-stats-item-count">{{ dashboardData()?.summary.delivered_orders_count }}
+                            </div>
+                            <div class="card-stats-item-label">Completed</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-icon shadow-primary bg-primary">
+                    <i class="fas fa-archive"></i>
+                </div>
+                <div class="card-wrap">
+                    <div class="card-header">
+                        <h4>Total Orders</h4>
+                    </div>
+                    <div class="card-body">
+                        {{ dashboardData()?.summary.total_orders }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="card card-statistic-2">
+                <div class="card-chart">
+                    <canvas id="balance-chart" height="80"></canvas>
+                </div>
+                <div class="card-icon shadow-primary bg-primary">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="card-wrap">
+                    <div class="card-header">
+                        <h4>Total Sales</h4>
+                    </div>
+                    <div class="card-body">
+                        ₹{{ dashboardData()?.summary.total_sales | number:'1.2-2' }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="card card-statistic-2">
+                <div class="card-chart">
+                    <canvas id="sales-chart" height="80"></canvas>
+                </div>
+                <div class="card-icon shadow-primary bg-primary">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="card-wrap">
+                    <div class="card-header">
+                        <h4>Customers</h4>
+                    </div>
+                    <div class="card-body">
+                        {{ dashboardData()?.summary.total_users }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row row-deck">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Sales Overviews</h4>
+                </div>
+                <div class="card-body">
+                    <canvas id="myChart" height="158"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card gradient-bottom">
+                <div class="card-header">
+                    <h4>Top 5 Products</h4>
+                </div>
+                <div class="card-body" id="top-5-scroll">
+                    <ul class="list-unstyled list-unstyled-border">
+                        <li class="media" *ngFor="let item of dashboardData()?.top_products">
+                            <img class="mr-3 rounded" width="55" [src]="getImageUrl(item)" alt="product">
+                            <div class="media-body">
+                                <div class="float-right">
+                                    <div class="font-weight-600 text-muted text-small">{{ item.total_sold }} Sales
+                                    </div>
+                                </div>
+                                <div class="media-title">{{ item.product_name }}</div>
+                                <div class="mt-1">
+                                    <div class="budget-price">
+                                        <div class="budget-price-square bg-primary" [style.width.%]="100"></div>
+                                        <div class="budget-price-label">₹{{ item.total_revenue | number:'1.2-2' }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="media" *ngIf="dashboardData()?.top_products.length === 0">
+                            <div class="media-body text-center">No sales yet</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-footer pt-3 d-flex justify-content-center">
+                    <div class="budget-price justify-content-center">
+                        <div class="budget-price-square bg-primary" [style.width.px]="20"></div>
+                        <div class="budget-price-label">Total Revenue</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Best Sellers</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Best Sellers List -->
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 mb-4" *ngFor="let product of dashboardData()?.best_sellers">
+                            <div class="product-item pb-3">
+                                <div class="product-image">
+                                    <img [src]="getImageUrl(product)" alt="image" class="img-fluid"
+                                        style="height: 150px; object-fit: cover;">
+                                </div>
+                                <div class="product-details">
+                                    <div class="product-name">{{ product.name }}</div>
+                                    <div class="product-review">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div class="text-muted text-small">₹{{ product.amount | number:'1.2-2' }}</div>
+                                    <div class="product-cta">
+                                        <a [routerLink]="['/admin/products/edit', product.id]"
+                                            class="btn btn-primary">Edit</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Recent Orders</h4>
+                    <div class="card-header-action">
+                        <a routerLink="/admin/orders" class="btn btn-danger">View More <i
+                                class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive table-invoice">
+                        <table class="table table-striped w-100">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let order of dashboardData()?.recent_orders">
+                                    <td><a [routerLink]="['/admin/order', order.id, 'show']">ORD-{{ order.id }}</a></td>
+                                    <td class="font-weight-600">{{ order.customer_name }}</td>
+                                    <td>
+                                        <div class="badge" [ngClass]="{
+                                        'badge-success': order.status === 'delivered',
+                                        'badge-warning': order.status === 'pending',
+                                        'badge-info': order.status !== 'delivered' && order.status !== 'pending'
+                                    }">{{ order.status | titlecase }}</div>
+                                    </td>
+                                    <td>{{ order.created_at | date:'MMM dd, yyyy' }}</td>
+                                    <td>
+                                        <a [routerLink]="['/admin/order', order.id, 'show']"
+                                            class="btn btn-primary">Detail</a>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="dashboardData()?.recent_orders.length === 0">
+                                    <td colspan="5" class="text-center">No orders found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -40,13 +40,12 @@
                                         <td>{{faq.id}}</td>
                                         <td>{{faq.question}}</td>
                                         <td>
-                                            <a [routerLink]="['/admin/faq/edit', faq.id]" class="btn btn-primary">
-                                                Edit
-                                            </a>
+                                            <a [routerLink]="['/admin/faq/edit', faq.id]" class="btn btn-primary"><i
+                                                    class="fas fa-edit"></i></a>
                                         </td>
                                         <td>
-                                            <button (click)="deleteFaq(faq.id)" class="btn btn-danger">
-                                                Delete
+                                            <button (click)="deleteFaq(faq.id)" class="btn btn-danger"><i
+                                                    class="fas fa-trash"></i>
                                             </button>
                                         </td>
                                     </tr>
