@@ -148,9 +148,9 @@
                     <h4>Best Sellers</h4>
                 </div>
                 <div class="card-body">
-                    <!-- Best Sellers List -->
-                    <div class="row">
-                        <div class="col-md-3 col-sm-6 mb-4" *ngFor="let product of dashboardData()?.best_sellers">
+                    <!-- Best Sellers Slider -->
+                    <div class="owl-carousel owl-theme" id="products-carousel">
+                        <div *ngFor="let product of dashboardData()?.best_sellers">
                             <div class="product-item pb-3">
                                 <div class="product-image">
                                     <img [src]="getImageUrl(product)" alt="image" class="img-fluid"

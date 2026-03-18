@@ -4,6 +4,7 @@ import { DashboardService } from '../../../service/dashboard';
 import { RouterLink } from '@angular/router';
 
 declare var Chart: any;
+declare var $: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -50,8 +51,8 @@ export class Dashboard implements OnInit {
         if (response.status === 'success') {
           this.dashboardData.set(response.data);
           if (isPlatformBrowser(this.platformId)) {
-            // Increased timeout slightly to ensure DOM is ready
-            setTimeout(() => this.initChart(), 300);
+            // Increased timeout to ensure DOM is ready for both Chart.js and Owl Carousel
+            setTimeout(() => this.initChart(), 500);
           }
         }
       },
@@ -67,6 +68,9 @@ export class Dashboard implements OnInit {
     // Small Sparkline Charts
     this.initSparkline('balance-chart', [10, 20, 15, 30, 25, 40, 35], '#f3f6f8');
     this.initSparkline('sales-chart', [5, 10, 8, 15, 12, 20, 18], '#f3f6f8');
+
+    // Initialize Best Sellers Carousel
+    this.initCarousel();
 
     // Main Sales Chart
     const canvas = document.getElementById('myChart') as HTMLCanvasElement;
@@ -111,6 +115,25 @@ export class Dashboard implements OnInit {
       }
     } else {
       console.warn('Canvas or Chart.js not found:', { canvas: !!canvas, Chart: typeof Chart });
+    }
+  }
+
+  initCarousel(): void {
+    if (typeof $ !== 'undefined' && $('#products-carousel').length > 0) {
+      if ($.fn.owlCarousel) {
+        $('#products-carousel').owlCarousel({
+          items: 3,
+          margin: 10,
+          autoplay: true,
+          autoplayTimeout: 5000,
+          loop: true,
+          responsive: {
+            0: { items: 1 },
+            768: { items: 2 },
+            1200: { items: 3 }
+          }
+        });
+      }
     }
   }
 
