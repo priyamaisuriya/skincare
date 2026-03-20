@@ -89,4 +89,9 @@ export class AuthService {
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
+
+  updateAdminPassword(data: any): Observable<any> {
+    const changePasswordUrl = 'http://127.0.0.1:8000/api/admin/change-password';
+    return this.http.post<any>(changePasswordUrl, data);
+  }
 }

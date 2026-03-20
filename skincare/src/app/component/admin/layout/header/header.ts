@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../../service/auth';
 import { CommonModule } from '@angular/common';
+import { RouterLink, Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
@@ -14,7 +15,10 @@ export class Header implements OnInit {
   public displayName: string = '';
   public userImagePath: string = 'assets/img/avatar/avatar-1.png';
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
@@ -44,6 +48,6 @@ export class Header implements OnInit {
 
   public logout(): void {
     this.authService.logout();
-    window.location.reload();
+    this.router.navigate(['/login']);
   }
 }

@@ -1,0 +1,104 @@
+<section class="section">
+  <div class="section-header">
+    <h1>Change Password</h1>
+    <div class="section-header-breadcrumb">
+      <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
+      <div class="breadcrumb-item">Change Password</div>
+    </div>
+  </div>
+
+  <div class="section-body">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-8 col-lg-8">
+        <div class="card card-primary">
+          <div class="card-header">
+            <h4>Update Your Password</h4>
+          </div>
+          <div class="card-body">
+            @if (successMessage) {
+            <div class="alert alert-success alert-dismissible show fade">
+              <div class="alert-body">
+                <button class="close" (click)="successMessage = ''">
+                  <span>&times;</span>
+                </button>
+                {{ successMessage }}
+              </div>
+            </div>
+            }
+
+            @if (errorMessage) {
+            <div class="alert alert-danger alert-dismissible show fade">
+              <div class="alert-body">
+                <button class="close" (click)="errorMessage = ''">
+                  <span>&times;</span>
+                </button>
+                {{ errorMessage }}
+              </div>
+            </div>
+            }
+
+            @if (errors.length > 0) {
+            <div class="alert alert-danger alert-dismissible show fade">
+              <div class="alert-body">
+                <button class="close" (click)="errors = []">
+                  <span>&times;</span>
+                </button>
+                <ul class="mb-0">
+                  @for (error of errors; track error) {
+                  <li>{{ error }}</li>
+                  }
+                </ul>
+              </div>
+            </div>
+            }
+
+            <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+              <div class="form-group">
+                <label for="current_password">Current Password</label>
+                <input type="password" formControlName="current_password" id="current_password" 
+                  class="form-control" [class.is-invalid]="passwordForm.get('current_password')?.invalid && passwordForm.get('current_password')?.touched"
+                  placeholder="Enter current password">
+                @if (passwordForm.get('current_password')?.invalid && passwordForm.get('current_password')?.touched) {
+                <div class="invalid-feedback">
+                  Please enter your current password
+                </div>
+                }
+              </div>
+
+              <div class="form-group">
+                <label for="new_password">New Password</label>
+                <input type="password" formControlName="new_password" id="new_password" 
+                  class="form-control" [class.is-invalid]="passwordForm.get('new_password')?.invalid && passwordForm.get('new_password')?.touched"
+                  placeholder="Enter new password">
+                @if (passwordForm.get('new_password')?.invalid && passwordForm.get('new_password')?.touched) {
+                <div class="invalid-feedback">
+                  New password must be at least 8 characters
+                </div>
+                }
+              </div>
+
+              <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" formControlName="confirm_password" id="confirm_password" 
+                  class="form-control" [class.is-invalid]="(passwordForm.get('confirm_password')?.invalid || passwordForm.hasError('mismatch')) && passwordForm.get('confirm_password')?.touched"
+                  placeholder="Repeat new password">
+                @if (passwordForm.hasError('mismatch') && passwordForm.get('confirm_password')?.touched) {
+                <div class="invalid-feedback">
+                  Passwords do not match
+                </div>
+                }
+              </div>
+
+              <div class="form-group mb-0">
+                <button type="submit" class="btn btn-primary btn-block" [disabled]="submitting">
+                  <span *ngIf="submitting" class="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
+                  {{ submitting ? 'Updating password...' : 'Update Password' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
