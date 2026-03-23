@@ -73,11 +73,10 @@
                                     <div class="form-group row mb-4">
                                         <label class="col-form-label">Parent id</label>
                                         <select class="form-control" formControlName="parent_id" id="parent_id">
-
-                                            <option value="">-- Select Parent Category --</option>
-
-
-
+                                            <option [value]="0">-- Select Parent Category (Root) --</option>
+                                            <option *ngFor="let parent of parentCategories" [value]="parent.id">
+                                                {{ parent.name }}
+                                            </option>
                                         </select>
                                         <div class="text-danger mt-1"
                                             *ngIf="categoryForm.get('parent_id')?.invalid && categoryForm.get('parent_id')?.touched ">

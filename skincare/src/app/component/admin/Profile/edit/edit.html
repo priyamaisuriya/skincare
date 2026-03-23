@@ -1,0 +1,144 @@
+<section class="section">
+  <div class="section-header">
+    <h1>Profile</h1>
+    <div class="section-header-breadcrumb">
+      <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
+      <div class="breadcrumb-item">Profile</div>
+    </div>
+  </div>
+  <div class="section-body">
+    <h2 class="section-title">Hi, {{ user?.name }}!</h2>
+    <p class="section-lead" style="margin-top: -10px;">
+      Update your personal information and profile picture here.
+    </p>
+
+    <div class="row mt-sm-4">
+      <div class="col-12 col-md-12 col-lg-5">
+        <div class="card profile-widget">
+          <div class="profile-widget-header">
+            <img alt="image" [src]="userImagePath" class="rounded-circle profile-widget-picture"
+              style="width: 100px; height: 100px; object-fit: cover;">
+            <div class="profile-widget-items">
+              <div class="profile-widget-item">
+                <div class="profile-widget-item-label">Status</div>
+                <div class="profile-widget-item-value">Active</div>
+              </div>
+              <div class="profile-widget-item">
+                <div class="profile-widget-item-label">Role</div>
+                <div class="profile-widget-item-value">Admin</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Profile Image</label>
+            <input type="file" (change)="onFileSelected($event)" class="form-control">
+            <small class="text-muted">Max file size 2MB (JPEG, PNG, JPG, GIF)</small>
+          </div>
+          <div class="profile-widget-description">
+            <div class="profile-widget-name">{{ user?.name }}
+              <div class="text-muted d-inline font-weight-normal">
+                <div class="slash"></div> {{ user?.email }}
+              </div>
+            </div>
+            <p>{{ user?.address || 'No address provided yet.' }}</p>
+          </div>
+        </div>
+
+        @if (successMessage) {
+        <div class="alert alert-success alert-dismissible show fade">
+          <div class="alert-body">
+            <button class="close" (click)="successMessage = ''">
+              <span>&times;</span>
+            </button>
+            {{ successMessage }}
+          </div>
+        </div>
+        }
+
+        @if (errors.length > 0) {
+        <div class="alert alert-danger alert-dismissible show fade">
+          <div class="alert-body">
+            <button class="close" (click)="errors = []">
+              <span>&times;</span>
+            </button>
+            <ul class="mb-0">
+              @for (error of errors; track error) {
+              <li>{{ error }}</li>
+              }
+            </ul>
+          </div>
+        </div>
+        }
+      </div>
+
+      <div class="col-12 col-md-12 col-lg-7">
+        <div class="card">
+          <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="needs-validation" novalidate="">
+            <div class="card-header">
+              <h4>Edit Profile</h4>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="form-group col-md-6 col-12">
+                  <label>Name</label>
+                  <input type="text" formControlName="name" class="form-control" required="">
+                  @if (profileForm.get('name')?.invalid && profileForm.get('name')?.touched) {
+                  <div class="text-danger small">Please fill in the name</div>
+                  }
+                </div>
+                <div class="form-group col-md-6 col-12">
+                  <label>Email</label>
+                  <input type="email" formControlName="email" class="form-control" required="">
+                  @if (profileForm.get('email')?.invalid && profileForm.get('email')?.touched) {
+                  <div class="text-danger small">Please fill in a valid email</div>
+                  }
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6 col-12">
+                  <label>First Name</label>
+                  <input type="text" formControlName="first_name" class="form-control">
+                </div>
+                <div class="form-group col-md-6 col-12">
+                  <label>Last Name</label>
+                  <input type="text" formControlName="last_name" class="form-control">
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-6 col-12">
+                  <label>Phone Number</label>
+                  <input type="tel" formControlName="phone_number" class="form-control">
+                </div>
+                <div class="form-group col-md-6 col-12">
+                  <label>Date of Birth</label>
+                  <input type="date" formControlName="date_of_birth" class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Address</label>
+                <textarea formControlName="address" class="form-control"></textarea>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-4 col-12">
+                  <label>City</label>
+                  <input type="text" formControlName="city" class="form-control">
+                </div>
+                <div class="form-group col-md-4 col-12">
+                  <label>State</label>
+                  <input type="text" formControlName="state" class="form-control">
+                </div>
+                <div class="form-group col-md-4 col-12">
+                  <label>Postal Code</label>
+                  <input type="text" formControlName="postal_code" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="card-footer text-right">
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -35,18 +35,28 @@
                                     <tr *ngFor="let cat of categories$ | async">
                                         <td>{{cat.id}}</td>
                                         <td>{{cat.name}}</td>
-                                        <td>{{cat.parent_id}}</td>
-                                        <td>{{cat.home_page}}</td>
+                                        <td>
+                                            @if (cat.parent && cat.parent.name) {
+                                            {{ cat.parent.name }}
+                                            } @else {
+                                            <span class="text-primary">Parent</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            @if(cat.home_page){
+                                            <span class="badge badge-success">Active</span>
+                                            } @else {
+                                            <span class="badge badge-danger">Inactive</span>
+                                            }
+                                        </td>
                                         <td>{{cat.sort_order}}</td>
                                         <td>
                                             <a [routerLink]="['/admin/categories/edit', cat.id]"
-                                                class="btn btn-primary">
-                                                Edit
-                                            </a>
+                                                class="btn btn-primary"><i class="fas fa-edit"></i></a>
                                         </td>
                                         <td>
-                                            <button (click)="deleteCategory(cat.id)" class="btn btn-danger">
-                                                Delete
+                                            <button (click)="deleteCategory(cat.id)" class="btn btn-danger"><i
+                                                    class="fas fa-trash"></i>
                                             </button>
                                         </td>
                                     </tr>

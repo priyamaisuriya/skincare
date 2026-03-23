@@ -35,7 +35,13 @@
                                         <td>{{user.id}}</td>
                                         <td>{{user.name}}</td>
                                         <td>{{user.email}}</td>
-                                        <td>{{user.status}}</td>
+                                        <td>
+                                            @if (user.status) {
+                                            <span class="badge badge-success">Active</span>
+                                            } @else {
+                                            <span class="badge badge-danger">Inactive</span>
+                                            }
+                                        </td>
                                         <td>
                                             <ng-container *ngIf="user.profile_image; else noImage">
                                                 <img src="http://127.0.0.1:8000/storage/{{user.profile_image}}"
@@ -50,11 +56,12 @@
                                             </ng-template>
                                         </td>
                                         <td>
-                                            <a [routerLink]="['/admin/user/edit', user.id]"
-                                                class="btn btn-primary">Edit</a>
+                                            <a [routerLink]="['/admin/user/edit', user.id]" class="btn btn-primary"><i
+                                                    class="fas fa-edit"></i></a>
                                         </td>
                                         <td>
-                                            <button (click)="deleteUser(user.id)" class="btn btn-danger">Delete</button>
+                                            <button (click)="deleteUser(user.id)" class="btn btn-danger"><i
+                                                    class="fas fa-trash"></i></button>
                                         </td>
                                     </tr>
                                 </tbody>
