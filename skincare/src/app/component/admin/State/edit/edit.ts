@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { StateService } from '../../../../service/state';
 
 @Component({
@@ -21,7 +21,8 @@ export class Edit implements OnInit {
     private fb: FormBuilder,
     private stateService: StateService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.stateForm = this.fb.group({
       name: ['', [Validators.required]],
@@ -34,7 +35,9 @@ export class Edit implements OnInit {
     if (id) {
       this.isEditMode = true;
       this.stateId = +id;
-      this.loadState(this.stateId);
+      if (isPlatformBrowser(this.platformId)) {
+        this.loadState(this.stateId);
+      }
     }
   }
 
@@ -52,7 +55,9 @@ export class Edit implements OnInit {
       error: (err) => {
         console.error('Error loading state:', err);
         this.loading = false;
-        alert('Failed to load state details.');
+        if (isPlatformBrowser(this.platformId)) {
+          alert('Failed to load state details.');
+        }
       }
     });
   }

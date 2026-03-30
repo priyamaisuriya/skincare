@@ -41,7 +41,9 @@ export class Dashboard implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadDashboardData();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadDashboardData();
+    }
   }
 
   loadDashboardData(): void {

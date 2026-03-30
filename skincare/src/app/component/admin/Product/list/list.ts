@@ -18,6 +18,7 @@ declare const $: any;
 export class List implements OnInit {
   private productsSubject = new BehaviorSubject<Products[]>([]);
   products$: Observable<Products[]> = this.productsSubject.asObservable();
+  loading: boolean = true;
 
   constructor(
     private productService: ProductsService,
@@ -32,31 +33,37 @@ export class List implements OnInit {
   }
 
   loadProducts(): void {
+    this.loading = true;
     this.productService.getAllProducts().subscribe({
       next: (response: any) => {
+        console.log('Products List - API Response:', response);
         // Handle both direct arrays and Laravel wrapper objects
         const productsData = response.data || response.products || response;
         const productsArray = Array.isArray(productsData) ? productsData : [];
 
         this.productsSubject.next(productsArray);
+        this.loading = false;
         this.cdr.detectChanges();
 
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {
-            if (!$.fn.DataTable.isDataTable('#products-table')) {
-            this.initDataTable();
+            if (typeof $ !== 'undefined' && $.fn.DataTable) {
+              this.initDataTable();
             }
           }, 300);
         }
       },
       error: (err) => {
-        console.error('Error loading products:', err);
+        console.error('Products List - Error loading data:', err);
+        this.productsSubject.next([]);
+        this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
   initDataTable(): void {
-    if (!isPlatformBrowser(this.platformId) || typeof $ === 'undefined') {
+    if (!isPlatformBrowser(this.platformId) || typeof $ === 'undefined' || !$.fn.DataTable) {
       return;
     }
 
@@ -65,7 +72,7 @@ export class List implements OnInit {
     }
 
     $('#products-table').DataTable({
-      columnDefs: [{ orderable: false, targets: [1, 6, 7] }]
+      columnDefs: [{ orderable: false, targets: [4, 5, 6] }]
     });
   }
 

@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { CompanySettingsService } from '../../../../service/companysetting';
 
 @Component({
@@ -24,7 +24,8 @@ export class CompanySettingsEdit implements OnInit {
     private companySettingsService: CompanySettingsService,
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.companySettingsForm = this.fb.group({
       name: ['', Validators.required],
@@ -44,7 +45,9 @@ export class CompanySettingsEdit implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadCompanySettings();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadCompanySettings();
+    }
   }
 
   loadCompanySettings(): void {
@@ -129,7 +132,9 @@ export class CompanySettingsEdit implements OnInit {
           console.log(`- ${key}:`, control.errors);
         }
       });
-      alert('Please fill in all required fields.');
+      if (isPlatformBrowser(this.platformId)) {
+        alert('Please fill in all required fields.');
+      }
       return;
     }
 
@@ -175,7 +180,9 @@ export class CompanySettingsEdit implements OnInit {
         error: (err: any) => {
           console.error('Update Error Detail:', err);
           const msg = err.error?.message || (err.error && typeof err.error === 'string' ? err.error : 'Server Error');
-          alert(`Failed to update settings. Error: ${msg}`);
+          if (isPlatformBrowser(this.platformId)) {
+            alert(`Failed to update settings. Error: ${msg}`);
+          }
         }
       });
     } else {
@@ -188,7 +195,9 @@ export class CompanySettingsEdit implements OnInit {
         error: (err: any) => {
           console.error('Create Error Detail:', err);
           const msg = err.error?.message || (err.error && typeof err.error === 'string' ? err.error : 'Server Error');
-          alert(`Failed to create settings. Error: ${msg}`);
+          if (isPlatformBrowser(this.platformId)) {
+            alert(`Failed to create settings. Error: ${msg}`);
+          }
         }
       });
     }
