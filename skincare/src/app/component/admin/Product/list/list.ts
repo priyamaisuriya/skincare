@@ -19,6 +19,7 @@ export class List implements OnInit {
   private productsSubject = new BehaviorSubject<Products[]>([]);
   products$: Observable<Products[]> = this.productsSubject.asObservable();
   isSyncing: boolean = false;
+  loading: boolean = false;
 
   constructor(
     private productService: ProductsService,
