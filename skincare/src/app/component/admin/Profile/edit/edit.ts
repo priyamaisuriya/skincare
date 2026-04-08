@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ProfileService } from '../../../../service/profile';
@@ -22,7 +22,8 @@ export class Edit implements OnInit {
   constructor(
     private fb: FormBuilder,
     private profileService: ProfileService,
-    private authService: AuthService
+    private authService: AuthService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.profileForm = this.fb.group({
       name: ['', Validators.required],
@@ -48,16 +49,18 @@ export class Edit implements OnInit {
     });
 
     // Fetch fresh data from backend
-    this.profileService.getProfile().subscribe({
-      next: (response: any) => {
-        if (response.status === 'success' && response.data) {
-          this.user = response.data;
-          this.authService.setUser(this.user);
-          this.updateForm(this.user);
-        }
-      },
-      error: (err) => console.error('Error fetching profile:', err)
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      this.profileService.getProfile().subscribe({
+        next: (response: any) => {
+          if (response.status === 'success' && response.data) {
+            this.user = response.data;
+            this.authService.setUser(this.user);
+            this.updateForm(this.user);
+          }
+        },
+        error: (err) => console.error('Error fetching profile:', err)
+      });
+    }
   }
 
   private updateForm(userData: any): void {

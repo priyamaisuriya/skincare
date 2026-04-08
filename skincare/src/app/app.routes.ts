@@ -27,6 +27,8 @@ import { Edit as ProfileEdit } from './component/admin/Profile/edit/edit';
 import { Login } from './component/Auth/login/login';
 import { Dashboard } from './component/admin/dashboard/dashboard';
 import { ChangePasswordComponent } from './component/admin/Changepassword/edit/edit';
+import { List as StateList } from './component/admin/State/list/list';
+import { Edit as StateEdit } from './component/admin/State/edit/edit';
 
 export const routes: Routes = [
     { path: 'login', component: Login },
@@ -88,6 +90,10 @@ export const routes: Routes = [
             { path: 'admin/dashboard', component: Dashboard },
 
             { path: 'admin/change-password', component: ChangePasswordComponent },
+
+            { path: 'admin/state', component: StateList },
+            { path: 'admin/state/create', component: StateEdit },
+            { path: 'admin/state/edit/:id', component: StateEdit },
 
 
         ]
