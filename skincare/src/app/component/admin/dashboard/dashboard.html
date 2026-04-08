@@ -213,7 +213,7 @@
                                     </td>
                                     <td>{{ order.created_at | date:'MMM dd, yyyy' }}</td>
                                     <td>
-                                        <a [routerLink]="['/admin/order', order.id, 'show']"
+                                        <a [routerLink]="['/admin/order', 'show', order.id]"
                                             class="btn btn-primary">Detail</a>
                                     </td>
                                 </tr>

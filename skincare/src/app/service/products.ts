@@ -48,4 +48,8 @@ export class ProductsService {
   saveRelatedProducts(productId: number, relatedIds: number[]): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/${productId}/related`, { related_ids: relatedIds });
   }
+
+  syncFacebookCatalog(): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/sync-facebook-catalog`, {});
+  }
 }

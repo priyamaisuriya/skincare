@@ -18,6 +18,7 @@ declare const $: any;
 export class List implements OnInit {
   private productsSubject = new BehaviorSubject<Products[]>([]);
   products$: Observable<Products[]> = this.productsSubject.asObservable();
+  isSyncing: boolean = false;
 
   constructor(
     private productService: ProductsService,
@@ -77,6 +78,23 @@ export class List implements OnInit {
         },
         error: (err) => {
           console.error('Error deleting product:', err);
+        }
+      });
+    }
+  }
+
+  syncAllToFacebook(): void {
+    if (confirm('Are you sure you want to sync all products to Facebook Catalog? This may take a while.')) {
+      this.isSyncing = true;
+      this.productService.syncFacebookCatalog().subscribe({
+        next: (resp) => {
+          alert('Sync successful: ' + resp.message);
+          this.isSyncing = false;
+        },
+        error: (err) => {
+          console.error('Error syncing to Facebook:', err);
+          alert('Sync failed. Check console for details.');
+          this.isSyncing = false;
         }
       });
     }

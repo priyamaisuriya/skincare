@@ -3,6 +3,9 @@
         <h1>Manage Products</h1>
         <div class="section-header-button">
             <a routerLink="/admin/products/create" class="btn btn-primary">Add New </a>
+            <button class="btn btn-info ml-2" (click)="syncAllToFacebook()" [disabled]="isSyncing">
+                {{ isSyncing ? 'Syncing...' : 'Sync All to Facebook' }}
+            </button>
         </div>
         <div class="section-header-breadcrumb">
             <div class="breadcrumb-item active"><a routerLink="/admin/dashboard">Dashboard</a></div>
