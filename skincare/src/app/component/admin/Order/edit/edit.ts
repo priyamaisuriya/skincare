@@ -21,6 +21,12 @@ export class Edit implements OnInit {
   couriers: Couriers[] = [];
   loadingCouriers: boolean = false;
 
+  //  current status
+  initialStatus: string = '';
+
+  //  status flow order
+  statusList: string[] = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+
   constructor(
     private fb: FormBuilder,
     private orderService: OrderService,
@@ -65,6 +71,7 @@ export class Edit implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.loadCouriers();
+
       const idParam = this.route.snapshot.paramMap.get('id');
       if (idParam) {
         this.isEditMode = true;
@@ -75,6 +82,8 @@ export class Edit implements OnInit {
   }
 
   loadCouriers(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     this.loadingCouriers = true;
     this.courierService.getAllCouriers().subscribe({
       next: (response: any) => {
@@ -102,12 +111,16 @@ export class Edit implements OnInit {
   }
 
   loadOrder(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     this.orderService.getOrderById(this.orderId).subscribe({
       next: (response: any) => {
         const data = response.data || response;
         this.orderData = data;
 
-        // Patch values to form
+        //  store current status
+        this.initialStatus = data.status;
+
         this.orderForm.patchValue({
           customer_id: data.customer_id,
           customer_name: data.customer_name,
@@ -134,12 +147,26 @@ export class Edit implements OnInit {
           est_delivery_date: data.est_delivery_date,
           delivery_date: data.delivery_date,
         });
+
         this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('Error loading Order:', err);
       }
     });
+  }
+
+  //  get current status index
+  getCurrentStatusIndex(): number {
+    return this.statusList.indexOf(this.initialStatus);
+  }
+
+  // disable past + current statuses
+  isStatusDisabled(status: string): boolean {
+    const currentIndex = this.getCurrentStatusIndex();
+    const optionIndex = this.statusList.indexOf(status);
+
+    return optionIndex <= currentIndex;
   }
 
   updateOrder(): void {
