@@ -90,17 +90,29 @@
                     </div>
                     <div class="card-body px-4 pb-4">
                         <form [formGroup]="orderForm" (ngSubmit)="updateOrder()">
-                            <div class="form-group">
-                                <label class="text-muted small font-weight-bold">Select Status</label>
-                                <select formControlName="status" class="form-control custom-select">
-                                    <option value="pending">Pending</option>
-                                    <option value="processing">Processing</option>
-                                    <!-- <option value="completed">Completed</option> -->
-                                    <option value="cancelled">Cancelled</option>
-                                    <option value="shipped">Shipped</option>
-                                    <option value="delivered">Delivered</option>
-                                </select>
-                            </div>
+                 <select formControlName="status" class="form-control custom-select">
+
+  <option value="pending" [disabled]="isStatusDisabled('pending')">
+    Pending
+  </option>
+
+  <option value="processing" [disabled]="isStatusDisabled('processing')">
+    Processing
+  </option>
+
+  <option value="cancelled" [disabled]="isStatusDisabled('cancelled')">
+    Cancelled
+  </option>
+
+  <option value="shipped" [disabled]="isStatusDisabled('shipped')">
+    Shipped
+  </option>
+
+  <option value="delivered" [disabled]="isStatusDisabled('delivered')">
+    Delivered
+  </option>
+
+</select>
                             <div class="form-group">
                                 <label class="text-muted small font-weight-bold">Select Courier</label>
                                 <select formControlName="courier_id" class="form-control custom-select">
