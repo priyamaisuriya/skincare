@@ -90,18 +90,18 @@
                     </div>
                     <div class="card-body px-4 pb-4">
                         <form [formGroup]="orderForm" (ngSubmit)="updateOrder()">
-                 <select formControlName="status" class="form-control custom-select">
+              <select formControlName="status" class="form-control custom-select">
 
   <option value="pending" [disabled]="isStatusDisabled('pending')">
     Pending
   </option>
 
-  <option value="processing" [disabled]="isStatusDisabled('processing')">
-    Processing
+  <option value="confirmed" [disabled]="isStatusDisabled('confirmed')">
+    Confirmed
   </option>
 
-  <option value="cancelled" [disabled]="isStatusDisabled('cancelled')">
-    Cancelled
+  <option value="processing" [disabled]="isStatusDisabled('processing')">
+    Processing
   </option>
 
   <option value="shipped" [disabled]="isStatusDisabled('shipped')">
@@ -110,6 +110,10 @@
 
   <option value="delivered" [disabled]="isStatusDisabled('delivered')">
     Delivered
+  </option>
+
+  <option value="cancelled" [disabled]="isStatusDisabled('cancelled')">
+    Cancelled
   </option>
 
 </select>

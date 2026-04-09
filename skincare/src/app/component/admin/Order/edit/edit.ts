@@ -24,8 +24,15 @@ export class Edit implements OnInit {
   //  current status
   initialStatus: string = '';
 
-  //  status flow order
-  statusList: string[] = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+  //  updated status flow (confirmed added)
+  statusList: string[] = [
+    'pending',
+    'confirmed',
+    'processing',
+    'shipped',
+    'delivered',
+    'cancelled'
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -118,7 +125,7 @@ export class Edit implements OnInit {
         const data = response.data || response;
         this.orderData = data;
 
-        //  store current status
+        // store current status
         this.initialStatus = data.status;
 
         this.orderForm.patchValue({
@@ -156,13 +163,17 @@ export class Edit implements OnInit {
     });
   }
 
-  //  get current status index
+  // get current index
   getCurrentStatusIndex(): number {
     return this.statusList.indexOf(this.initialStatus);
   }
 
-  // disable past + current statuses
+  // disable past + current, cancel always allowed
   isStatusDisabled(status: string): boolean {
+
+    // cancel always allowed
+    if (status === 'cancelled') return false;
+
     const currentIndex = this.getCurrentStatusIndex();
     const optionIndex = this.statusList.indexOf(status);
 
