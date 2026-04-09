@@ -17,40 +17,66 @@
                     <div class="card-body px-4 pb-4">
                         <table class="table table-bordered detail-table">
                             <tr>
-                                <th width="35%" class="bg-light-gray">Customer Name</th>
-                                <td>{{ orderForm.get('customer_name')?.value }}</td>
+                                <th width="35%" class="bg-light-gray font-weight-bold">Customer Name</th>
+                                <td>{{ orderData?.customer_name }}</td>
                             </tr>
                             <tr>
-                                <th class="bg-light-gray">Email</th>
-                                <td>{{ orderForm.get('customer_email')?.value }}</td>
+                                <th class="bg-light-gray font-weight-bold">Email</th>
+                                <td>{{ orderData?.customer_email }}</td>
                             </tr>
                             <tr>
-                                <th class="bg-light-gray">Phone</th>
-                                <td>{{ orderForm.get('customer_phone')?.value }}</td>
+                                <th class="bg-light-gray font-weight-bold">Phone</th>
+                                <td>{{ orderData?.customer_phone }}</td>
                             </tr>
                             <tr>
-                                <th class="bg-light-gray">Status</th>
+                                <th class="bg-light-gray font-weight-bold">Status</th>
                                 <td>
                                     <span class="badge badge-primary px-3 py-2 text-capitalize badge-pill">
-                                        {{ orderForm.get('status')?.value }}
+                                        {{ orderData?.status }}
                                     </span>
                                 </td>
                             </tr>
                             <tr>
-                                <th class="bg-light-gray">Total Amount</th>
+                                <th class="bg-light-gray font-weight-bold">Total Amount</th>
                                 <td class="font-weight-bold">
-                                    ₹{{ orderForm.get('total_amount')?.value | number:'1.2-2' }}
+                                    ₹{{ orderData?.total_amount | number:'1.2-2' }}
                                 </td>
                             </tr>
                             <tr>
-                                <th class="bg-light-gray">Shipping Address</th>
+                                <th class="bg-light-gray font-weight-bold">Shipping Address</th>
                                 <td>
-                                    {{ orderForm.get('customer_address')?.value }},
-                                    {{ orderForm.get('customer_city')?.value }},
-                                    {{ orderForm.get('customer_state')?.value }},
-                                    {{ orderForm.get('customer_postal_code')?.value }},
-                                    {{ orderForm.get('customer_country')?.value }}
+                                    {{ orderData?.customer_address }}
+                                    <span *ngIf="orderData?.customer_city">, {{ orderData?.customer_city }}</span>
+                                    <span *ngIf="orderData?.customer_state">, {{ orderData?.customer_state }}</span>
+                                    <span *ngIf="orderData?.customer_postal_code">, {{ orderData?.customer_postal_code
+                                        }}</span>
+                                    <span *ngIf="orderData?.customer_country">, {{ orderData?.customer_country }}</span>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light-gray font-weight-bold">Courier</th>
+                                <td>{{ getCourierName(orderForm.get('courier_id')?.value) || '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light-gray font-weight-bold">Tracking ID</th>
+                                <td>{{ orderForm.get('tracking_id')?.value || '-' }}</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light-gray font-weight-bold">Payment Status</th>
+                                <td>
+                                    <span class="badge badge-success px-3 py-1 badge-pill"
+                                        *ngIf="orderData?.payment_status === 'completed' || orderData?.payment_status === 'Paid' || orderData?.payment_id">
+                                        Completed
+                                    </span>
+                                    <span class="badge badge-warning px-3 py-1 badge-pill"
+                                        *ngIf="!orderData?.payment_id && orderData?.payment_status !== 'completed' && orderData?.payment_status !== 'Paid'">
+                                        {{ orderData?.payment_status || 'Pending' }}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light-gray font-weight-bold">Transaction Id</th>
+                                <td>{{ orderData?.transaction_id || orderData?.payment_id || '-' }}</td>
                             </tr>
                         </table>
                     </div>
@@ -60,7 +86,7 @@
             <div class="col-lg-4">
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-white border-bottom-0 pt-4 px-4">
-                        <h4 class="text-primary font-weight-bold">Update Status</h4>
+                        <h4 class="text-primary font-weight-bold">Update Order</h4>
                     </div>
                     <div class="card-body px-4 pb-4">
                         <form [formGroup]="orderForm" (ngSubmit)="updateOrder()">
@@ -69,11 +95,29 @@
                                 <select formControlName="status" class="form-control custom-select">
                                     <option value="pending">Pending</option>
                                     <option value="processing">Processing</option>
-                                    <option value="completed">Completed</option>
+                                    <!-- <option value="completed">Completed</option> -->
                                     <option value="cancelled">Cancelled</option>
                                     <option value="shipped">Shipped</option>
                                     <option value="delivered">Delivered</option>
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="text-muted small font-weight-bold">Select Courier</label>
+                                <select formControlName="courier_id" class="form-control custom-select">
+                                    <option value="">-- Select Courier --</option>
+                                    <option *ngIf="loadingCouriers" disabled>Loading couriers...</option>
+                                    <option *ngFor="let courier of couriers; trackBy: trackByCourierId"
+                                        [value]="courier.id">
+                                        {{ courier.name }}
+                                    </option>
+                                    <option *ngIf="!loadingCouriers && couriers.length === 0" value="">No Courier
+                                        Available</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="text-muted small font-weight-bold">Tracking ID</label>
+                                <input type="text" formControlName="tracking_id" class="form-control"
+                                    placeholder="Enter Tracking ID">
                             </div>
                             <button type="submit" class="btn btn-purple btn-block py-2 mt-4">
                                 Update Order

@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterLink, ActivatedRoute, Router } from '@angular/router';
-import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, FormsModule } from '@angular/forms';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { OrderService } from '../../../../service/order';
+import { CouriersService } from '../../../../service/couriers';
+import { Couriers } from '../../../../models/couriers';
 
 @Component({
   selector: 'app-edit',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule, CommonModule],
+  imports: [RouterLink, ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './edit.html',
   styleUrl: './edit.css',
 })
@@ -16,12 +18,17 @@ export class Edit implements OnInit {
   isEditMode = false;
   orderId: number = 0;
   orderData: any = null;
+  couriers: Couriers[] = [];
+  loadingCouriers: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     private orderService: OrderService,
+    private courierService: CouriersService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.initForm();
   }
@@ -48,7 +55,7 @@ export class Edit implements OnInit {
       source: ['Direct'],
       payment_id: [''],
       shipping_id: [''],
-      courier_id: [null],
+      courier_id: [''],
       tracking_id: [''],
       est_delivery_date: [''],
       delivery_date: [''],
@@ -56,12 +63,42 @@ export class Edit implements OnInit {
   }
 
   ngOnInit(): void {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam) {
-      this.isEditMode = true;
-      this.orderId = +idParam;
-      this.loadOrder();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadCouriers();
+      const idParam = this.route.snapshot.paramMap.get('id');
+      if (idParam) {
+        this.isEditMode = true;
+        this.orderId = +idParam;
+        this.loadOrder();
+      }
     }
+  }
+
+  loadCouriers(): void {
+    this.loadingCouriers = true;
+    this.courierService.getAllCouriers().subscribe({
+      next: (response: any) => {
+        this.loadingCouriers = false;
+        const data = response.data || response.couriers || response;
+        this.couriers = Array.isArray(data) ? data : [];
+        this.cdr.detectChanges();
+      },
+      error: (err: any) => {
+        console.error('Error loading couriers:', err);
+        this.loadingCouriers = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  trackByCourierId(index: number, courier: Couriers): number {
+    return courier.id;
+  }
+
+  getCourierName(id: any): string {
+    if (!id) return '';
+    const courier = this.couriers.find(c => c.id === Number(id));
+    return courier ? courier.name : '';
   }
 
   loadOrder(): void {
@@ -69,7 +106,7 @@ export class Edit implements OnInit {
       next: (response: any) => {
         const data = response.data || response;
         this.orderData = data;
-        
+
         // Patch values to form
         this.orderForm.patchValue({
           customer_id: data.customer_id,
@@ -92,11 +129,12 @@ export class Edit implements OnInit {
           source: data.source,
           payment_id: data.payment_id,
           shipping_id: data.shipping_id,
-          courier_id: data.courier_id,
-          tracking_id: data.tracking_id,
+          courier_id: data.courier_id ? Number(data.courier_id) : '',
+          tracking_id: data.tracking_id || '',
           est_delivery_date: data.est_delivery_date,
           delivery_date: data.delivery_date,
         });
+        this.cdr.detectChanges();
       },
       error: (err: any) => {
         console.error('Error loading Order:', err);

@@ -10,6 +10,7 @@
 .badge-success { background-color: #28a745; color: #fff; }
 .badge-danger { background-color: #dc3545; color: #fff; }
 .badge-info { background-color: #17a2b8; color: #fff; }
+.badge-primary { background-color: #6777ef; color: #fff; }
 
 .btn-show-action {
     background-color: #007bff;

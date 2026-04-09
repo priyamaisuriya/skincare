@@ -38,9 +38,10 @@
                                         <td>
                                             <span class="badge" [ngClass]="{
                                                 'badge-warning': order.status === 'pending' || order.status === '0' || order.status === 'Pending',
-                                                'badge-success': order.status === 'completed' || order.status === '1' || order.status === 'Delivered',
+                                                'badge-success': order.status === 'completed' || order.status === '1' || order.status === 'Delivered' || order.status === 'delivered',
                                                 'badge-danger': order.status === 'cancelled' || order.status === 'Cancelled',
-                                                'badge-info': order.status === 'processing' || order.status === 'Processing' || order.status === 'Shipped'
+                                                'badge-info': order.status === 'processing' || order.status === 'Processing' || order.status === 'Shipped',
+                                                'badge-primary': order.status === 'Confirmed' || order.status === 'confirmed'
                                             }">
                                                 {{ order.status }}
                                             </span>

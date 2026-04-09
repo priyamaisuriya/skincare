@@ -4,7 +4,9 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ProductsService } from '../../../../service/products';
+import { CategoriesService } from '../../../../service/categories';
 import { Products } from '../../../../models/products';
+import { Categories } from '../../../../models/categories';
 
 declare const $: any;
 
@@ -20,17 +22,43 @@ export class List implements OnInit {
   products$: Observable<Products[]> = this.productsSubject.asObservable();
   isSyncing: boolean = false;
   loading: boolean = false;
+  categories: Categories[] = [];
+  categoriesMap: { [key: number]: string } = {};
 
   constructor(
     private productService: ProductsService,
+    private categoriesService: CategoriesService,
     private cdr: ChangeDetectorRef,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
+      this.loadCategories();
       this.loadProducts();
     }
+  }
+
+  loadCategories(): void {
+    this.categoriesService.getAllCategories().subscribe({
+      next: (response: any) => {
+        const data = response.data || response;
+        if (Array.isArray(data)) {
+          this.categories = data;
+          this.categories.forEach(cat => {
+            this.categoriesMap[cat.id] = cat.name;
+          });
+          this.cdr.detectChanges();
+        }
+      },
+      error: (err) => {
+        console.error('Error loading categories:', err);
+      }
+    });
+  }
+
+  getCategoryName(id: number): string {
+    return this.categoriesMap[id] || 'Loading...';
   }
 
   loadProducts(): void {
