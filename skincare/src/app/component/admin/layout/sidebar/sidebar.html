@@ -85,12 +85,30 @@
         </a>
       </li>
 
+     
+
       <li>
-        <a class="nav-link" routerLink="/logout" routerLinkActive="active">
+        <a class="nav-link" routerLink="/admin/profile" routerLinkActive="active">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+        </a>
+      </li>
+
+       <li>
+        <a class="nav-link" routerLink="/admin/change-password" routerLinkActive="active">
+          <i class="fas fa-key"></i>
+          <span>Change Password</span>
+        </a>
+      </li>
+
+      <li>
+        <a class="nav-link" (click)="logout()" style="cursor: pointer;">
           <i class="fas fa-sign-out-alt"></i>
           <span>Logout</span>
         </a>
       </li>
+
+    
 
     </ul>
   </aside>
