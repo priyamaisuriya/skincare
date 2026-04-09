@@ -24,7 +24,7 @@ export class Edit implements OnInit {
   //  current status
   initialStatus: string = '';
 
-  //  updated status flow (confirmed added)
+  //  status flow
   statusList: string[] = [
     'pending',
     'confirmed',
@@ -125,7 +125,7 @@ export class Edit implements OnInit {
         const data = response.data || response;
         this.orderData = data;
 
-        // store current status
+        //  store current status
         this.initialStatus = data.status;
 
         this.orderForm.patchValue({
@@ -163,20 +163,23 @@ export class Edit implements OnInit {
     });
   }
 
-  // get current index
+  //  current index
   getCurrentStatusIndex(): number {
     return this.statusList.indexOf(this.initialStatus);
   }
 
-  // disable past + current, cancel always allowed
+  //  FINAL DISABLE LOGIC
   isStatusDisabled(status: string): boolean {
 
-    // cancel always allowed
-    if (status === 'cancelled') return false;
+    //  Delivered pachi badhu lock
+    if (this.initialStatus === 'delivered') {
+      return true;
+    }
 
     const currentIndex = this.getCurrentStatusIndex();
     const optionIndex = this.statusList.indexOf(status);
 
+    //  past + current disable
     return optionIndex <= currentIndex;
   }
 

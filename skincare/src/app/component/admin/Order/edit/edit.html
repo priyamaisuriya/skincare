@@ -90,8 +90,9 @@
                     </div>
                     <div class="card-body px-4 pb-4">
                         <form [formGroup]="orderForm" (ngSubmit)="updateOrder()">
-              <select formControlName="status" class="form-control custom-select">
-
+<select formControlName="status"
+        class="form-control custom-select"
+        [disabled]="initialStatus === 'delivered'">
   <option value="pending" [disabled]="isStatusDisabled('pending')">
     Pending
   </option>
