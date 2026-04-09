@@ -12,6 +12,8 @@ import { AuthService } from '../../../service/auth';
 })
 export class Login {
   loginForm!: FormGroup;
+  message: string = '';
+  messageType: 'success' | 'danger' | '' = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -33,11 +35,32 @@ export class Login {
     this.authService.login(payload).subscribe({
       next: (response) => {
         console.log('Login component: Success response:', response);
-        this.router.navigate(['/']); // Navigate to home or dashboard
+
+        // Detect user object from response (consistent with AuthService logic)
+        let user = response.user;
+        if (!user && response.data) {
+          user = (response.data.name || response.data.email) ? response.data : response.data.user;
+        }
+
+        if (user && user.type && user.type.toLowerCase() === 'admin') {
+          this.message = 'Successful Admin';
+          this.messageType = 'success';
+          alert(' Admin Login successfully');
+          setTimeout(() => {
+            this.router.navigate(['/admin/dashboard']); // Navigate to admin dashboard
+          }, 1500);
+        } else {
+          this.message = 'Invalid';
+          this.messageType = 'danger';
+          this.authService.logout(); // Clear token/user if it was a customer
+        }
       },
       error: (err) => {
         console.error('Login error:', err);
+        this.message = 'Invalid';
+        this.messageType = 'danger';
       }
     });
   }
 }
+

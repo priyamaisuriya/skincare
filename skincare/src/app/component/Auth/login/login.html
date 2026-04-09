@@ -10,6 +10,9 @@
                         <h4>Login</h4>
                     </div>
                     <div class="card-body">
+                        <div *ngIf="message" class="alert" [ngClass]="'alert-' + messageType" role="alert">
+                            {{ message }}
+                        </div>
                         <form [formGroup]="loginForm" (ngSubmit)="login()">
                             <div class="form-group">
                                 <label for="email">Email</label>
